@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ImageRasterClass</class>
+ <widget class="QMainWindow" name="ImageRasterClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>719</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Image Raster</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="GraphicsView" name="graphicsView">
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>719</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionOpenImage"/>
+    <addaction name="actionSaveImage"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="actionZoomIn"/>
+    <addaction name="actionZoomOut"/>
+    <addaction name="actionZoomToFit"/>
+    <addaction name="actionZoomToActual"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="actionSelectAll"/>
+    <addaction name="actionDelete"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpenImage"/>
+   <addaction name="actionSaveImage"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoomIn"/>
+   <addaction name="actionZoomOut"/>
+   <addaction name="actionZoomToFit"/>
+   <addaction name="actionZoomToActual"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSelect"/>
+   <addaction name="actionCounter"/>
+   <addaction name="actionMeasure"/>
+   <addaction name="actionCalibrate"/>
+   <addaction name="actionScale"/>
+   <addaction name="actionBlend"/>
+   <addaction name="actionLegend"/>
+  </widget>
+  <action name="actionScale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/scale.png</normaloff>:/Resources/scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>Scale</string>
+   </property>
+   <property name="toolTip">
+    <string>Use this to add scale for your scene.</string>
+   </property>
+   <property name="statusTip">
+    <string>Add scale to the scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+5</string>
+   </property>
+  </action>
+  <action name="actionBlend">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/blend.png</normaloff>:/Resources/blend.png</iconset>
+   </property>
+   <property name="text">
+    <string>Blend</string>
+   </property>
+   <property name="toolTip">
+    <string>A tool to create professional thumbnail in your scene.</string>
+   </property>
+   <property name="statusTip">
+    <string>Run Blend Wizard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+6</string>
+   </property>
+  </action>
+  <action name="actionLegend">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/legend.png</normaloff>:/Resources/legend.png</iconset>
+   </property>
+   <property name="text">
+    <string>Legend</string>
+   </property>
+   <property name="toolTip">
+    <string>Add or update existing legend based on markers data.</string>
+   </property>
+   <property name="statusTip">
+    <string>Add or update Legend</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+7</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/Normal.png</normaloff>:/Resources/Normal.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+   <property name="toolTip">
+    <string>Select objects</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="actionCounter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/LineMarker.png</normaloff>:/Resources/LineMarker.png</iconset>
+   </property>
+   <property name="text">
+    <string>Counter</string>
+   </property>
+   <property name="toolTip">
+    <string>Count objects</string>
+   </property>
+   <property name="statusTip">
+    <string>Click to count or drag to mark</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="actionMeasure">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/line.png</normaloff>:/Resources/line.png</iconset>
+   </property>
+   <property name="text">
+    <string>Measure</string>
+   </property>
+   <property name="toolTip">
+    <string>Measurements</string>
+   </property>
+   <property name="statusTip">
+    <string>Measurement tools</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="actionCalibrate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/calibrate.png</normaloff>:/Resources/calibrate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Calibrate</string>
+   </property>
+   <property name="toolTip">
+    <string>Calibrate scene by using this image or external image</string>
+   </property>
+   <property name="statusTip">
+    <string>Start calibration wizard</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
+   </property>
+  </action>
+  <action name="actionOpenImage">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/Open.png</normaloff>:/Resources/Open.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open Image</string>
+   </property>
+   <property name="toolTip">
+    <string>Open image</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSaveImage">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/Save.png</normaloff>:/Resources/Save.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save Image</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current scene</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/Undo.png</normaloff>:/Resources/Undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+   <property name="toolTip">
+    <string>Undo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/Redo.png</normaloff>:/Resources/Redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/ZoomIn.png</normaloff>:/Resources/ZoomIn.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom &amp;In</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom-in</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/ZoomOut.png</normaloff>:/Resources/ZoomOut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom &amp;Out</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom-out</string>
+   </property>
+  </action>
+  <action name="actionZoomToFit">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/ZoomFit.png</normaloff>:/Resources/ZoomFit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom to &amp;fit</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom to fit screen</string>
+   </property>
+  </action>
+  <action name="actionZoomToActual">
+   <property name="icon">
+    <iconset resource="imageraster.qrc">
+     <normaloff>:/Resources/ZoomActual.png</normaloff>:/Resources/ZoomActual.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom to &amp;actual</string>
+   </property>
+   <property name="toolTip">
+    <string>Zoom to actual size</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>&amp;Exit</string>
+   </property>
+   <property name="toolTip">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSelectAll">
+   <property name="text">
+    <string>Select &amp;All</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>&amp;Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>graphicsview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="imageraster.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>ImageRasterClass</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>266</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

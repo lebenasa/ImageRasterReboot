@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CalibrationWizard</class>
+ <widget class="QWizard" name="CalibrationWizard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>621</width>
+    <height>510</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Lens Calibration</string>
+  </property>
+  <widget class="QWizardPage" name="wizardPage1">
+   <property name="title">
+    <string>Calibration Wizard</string>
+   </property>
+   <property name="subTitle">
+    <string>Calibration is a vital part of measurement. This wizard will guide you through calibration steps for this profile. You can calibrate image in x-axis, y-axis or both. You can also provide multiple calibration images to work with. To begin click Next.</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout"/>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_6">
+   <property name="title">
+    <string>Calibrate X (Horizontal) Axis</string>
+   </property>
+   <property name="subTitle">
+    <string>We will begin by calibrating x-axis. Later you can calculate calibration value for y-axis automatically or do a separate calibration.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage">
+   <property name="title">
+    <string>Step 1: Open Calibration Image</string>
+   </property>
+   <property name="subTitle">
+    <string>Open image from your drive or use image from current scene.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="xImgDir">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="xBrowseImage">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>12</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="0" colspan="3">
+     <widget class="QRadioButton" name="xUseImageFromScene">
+      <property name="text">
+       <string>Use Image from current scene</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="QRadioButton" name="xUseImageFromDrive">
+      <property name="text">
+       <string>Use other image</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_2">
+   <property name="title">
+    <string>Step 2: Calibrate X-Axis</string>
+   </property>
+   <property name="subTitle">
+    <string>Click at two known points horizontally, then type their real distance in the textbox below. Use right-mouse-button to reset. Try to scroll mouse wheel if image is not visible.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="xLength">
+      <property name="maximum">
+       <number>999999</number>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QComboBox" name="xUnit">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <item>
+       <property name="text">
+        <string>µm</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>mm</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Distance:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="4">
+     <widget class="GraphicsView" name="xView"/>
+    </item>
+    <item row="2" column="3">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="xPixel">
+      <property name="text">
+       <string>0 px</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_7">
+   <property name="title">
+    <string>Calibrate Y (Vertical) Axis</string>
+   </property>
+   <property name="subTitle">
+    <string>You can calculate y-axis calibration value based from x-axis calibration value or do a separate calibration.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="1" column="0">
+     <widget class="QCommandLinkButton" name="cmdReview">
+      <property name="text">
+       <string>Finish calibration (obtain Y-axis value from X-axis calibration value)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QCommandLinkButton" name="cmdCalibrateY">
+      <property name="text">
+       <string>I want to calibrate Y (vertical) axis</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_8">
+   <property name="title">
+    <string>Step 1: Open Calibration Image</string>
+   </property>
+   <property name="subTitle">
+    <string>Open image from your drive or use image from current scene.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_8">
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="yImgDir">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QPushButton" name="yBrowseImage">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Browse...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>12</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0" colspan="3">
+     <widget class="QRadioButton" name="yUseImageFromDrive">
+      <property name="text">
+       <string>Use other image</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="3">
+     <widget class="QRadioButton" name="yUseImageFromX">
+      <property name="text">
+       <string>Use image from X-Axis calibration</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="3">
+     <widget class="QRadioButton" name="yUseImageFromScene">
+      <property name="text">
+       <string>Use image from current scene</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_3">
+   <property name="title">
+    <string>Step 2: Calibrate Y-Axis</string>
+   </property>
+   <property name="subTitle">
+    <string>Click at two known points vertically, then type their real distance in the textbox below. Use right-mouse-button to reset. Try to scroll mouse wheel if image is not visible.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0" colspan="4">
+     <widget class="GraphicsView" name="yView"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLabel" name="yPixel">
+      <property name="text">
+       <string>0 px</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Distance:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="yLength">
+      <property name="maximum">
+       <number>99999999</number>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QComboBox" name="yUnit">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <item>
+       <property name="text">
+        <string>µm</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>mm</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>232</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_4">
+   <property name="title">
+    <string>Review</string>
+   </property>
+   <property name="subTitle">
+    <string>We have created simple measurement scales from your calibration. You can use it to verify your calibration. Use the back arrow if you want to re-calibrate this image. Try to scroll mouse wheel if image is not visible.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0">
+     <widget class="GraphicsView" name="reviewView"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_5">
+   <property name="title">
+    <string>Finish!</string>
+   </property>
+   <property name="subTitle">
+    <string>Now you can save calibration result to this profile or improve calibration accuracy by doing more calibration session.</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="0" column="0">
+     <widget class="QCommandLinkButton" name="cmdDone">
+      <property name="text">
+       <string>I'm done. Save the result of this session.</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCommandLinkButton" name="cmdRepeat">
+      <property name="text">
+       <string>Restart calibration session from beginning</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>graphicsview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>xUseImageFromDrive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>xImgDir</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>151</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>xUseImageFromDrive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>xBrowseImage</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>509</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdDone</sender>
+   <signal>clicked()</signal>
+   <receiver>CalibrationWizard</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>498</x>
+     <y>380</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmdRepeat</sender>
+   <signal>clicked()</signal>
+   <receiver>CalibrationWizard</receiver>
+   <slot>restart()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yUseImageFromDrive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>yImgDir</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>201</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>234</x>
+     <y>191</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>yUseImageFromDrive</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>yBrowseImage</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>547</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>576</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

@@ -1,0 +1,58 @@
+<RCC>
+  <qresource>
+    <file>Resources/two circle2.png</file>
+    <file>Resources/Rectangle.png</file>
+    <file>Resources/blend2.png</file>
+    <file>Resources/Line.png</file>
+    <file>Resources/free shape3.png</file>
+    <file>Resources/Legend2.png</file>
+    <file>Resources/Scale.png</file>
+    <file>Resources/Polyline.png</file>
+    <file>Resources/free shape.png</file>
+    <file>Resources/Blend.png</file>
+    <file>Resources/MultiLine.png</file>
+    <file>Resources/Preset8.png</file>
+    <file>Resources/ImageRaster.ico</file>
+    <file>Resources/Calibration.png</file>
+    <file>Resources/CircleMarker.png</file>
+    <file>Resources/CircleRuler.png</file>
+    <file>Resources/Preset1.png</file>
+    <file>Resources/Preset2.png</file>
+    <file>Resources/Preset3.png</file>
+    <file>Resources/Preset4.png</file>
+    <file>Resources/Preset5.png</file>
+    <file>Resources/Preset6.png</file>
+    <file>Resources/Preset7.png</file>
+    <file>Resources/Counter.png</file>
+    <file>Resources/Delete.png</file>
+    <file>Resources/Font.png</file>
+    <file>Resources/FontSize.png</file>
+    <file>Resources/LineMarker.png</file>
+    <file>Resources/LineRuler.png</file>
+    <file>Resources/Normal.png</file>
+    <file>Resources/Open.png</file>
+    <file>Resources/PolyRuler.png</file>
+    <file>Resources/RectMarker.png</file>
+    <file>Resources/RectRuler.png</file>
+    <file>Resources/Save.png</file>
+    <file>Resources/TwoCircleRuler.png</file>
+    <file>Resources/ZoomActual.png</file>
+    <file>Resources/ZoomFit.png</file>
+    <file>Resources/ZoomIn.png</file>
+    <file>Resources/ZoomOut.png</file>
+    <file>Resources/Undo.png</file>
+    <file>Resources/Redo.png</file>
+    <file>Resources/SmartRaster.png</file>
+    <file>Resources/linecolor.png</file>
+    <file>Resources/calibrate.png</file>
+    <file>Resources/blend.png</file>
+    <file>Resources/line.png</file>
+    <file>Resources/Circle.png</file>
+    <file>Resources/rectangle.png</file>
+    <file>Resources/Polygon.png</file>
+    <file>Resources/TwoCircle.png</file>
+    <file>Resources/polyline.png</file>
+    <file>Resources/legend.png</file>
+    <file>Resources/scale.png</file>
+  </qresource>
+</RCC>
