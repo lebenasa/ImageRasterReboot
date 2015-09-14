@@ -15,6 +15,9 @@ public:
 	void saveProfile(int index);
 	void loadProfile(int index);
 
+	QFont font() const;
+	void setFont(const QFont& f);
+
 protected:
 	void contextMenuEvent(QContextMenuEvent* event);
 
@@ -22,6 +25,7 @@ signals:
 	void dataChanged();
 	void MarkerChanged(int);
 	void State(int);	//Change MarkerState without calling setType() on model
+	void fontChanged(const QFont&);
 
 public slots:
 	void applyPreset();
@@ -47,12 +51,16 @@ public:
 
 	QList<QWidget*> widgets;
 
+	QFont font() const;
+	void setFont(const QFont& f);
+
 protected:
 	void contextMenuEvent(QContextMenuEvent* event);
 
 signals:
 	void dataChanged();
 	void defaultText();
+	void fontChanged(const QFont&);
 
 public slots:
 	void applyPreset();

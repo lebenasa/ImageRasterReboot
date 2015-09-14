@@ -117,8 +117,9 @@ public:
 	int hI, vI;
 public slots:
 	void showScale(int h, int v);
-	void showHScale(int h);
-	void showVScale(int v);
+	void updateHScale(int h);
+	void updateVScale(int v);
+	void updateStyle();
 	void setPenWidth(int width);
 	void setLength(const QString& txt);
 	void setFont(const QFont& font);

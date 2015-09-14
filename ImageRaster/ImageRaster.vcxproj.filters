@@ -187,9 +187,6 @@
     <ClInclude Include="GeneratedFiles\ui_BlendDock.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_BlendWizard.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_CalibrationWizard.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -212,6 +209,9 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_ScaleDock.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_StylePage.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -258,9 +258,6 @@
     <CustomBuild Include="BlendDock.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="BlendWizard.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="CalibrationWizard.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
@@ -283,6 +280,9 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="ScaleDock.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="StylePage.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
   </ItemGroup>

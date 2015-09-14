@@ -19,6 +19,7 @@ GraphicsScene::~GraphicsScene(void)
 }
 
 void GraphicsScene::setAppState(int curState) {
+	if (appState == curState) return;
 	appState = curState;
 
 	resetStates();
@@ -35,6 +36,8 @@ void GraphicsScene::setAppState(int curState) {
 	else if (AppState::Measure == appState) {
 		setRulerState(rulerState);
 	}
+
+	emit appStateChanged(curState);
 }
 
 void GraphicsScene::setMarkerType(int mode) {
@@ -149,8 +152,8 @@ void GraphicsScene::cmrSelect(QGraphicsSceneMouseEvent *event, MouseState ms) {
 	}
 	else if (MouseState::Release == ms) {
 		QGraphicsScene::mouseReleaseEvent(event);
-		//if (mouseGrabberItem() != nullptr)
-		//	return;
+		if (mouseGrabberItem() != nullptr)
+			return;
 		if (Qt::LeftButton != event->button()) return;
 		isDragged = false;
 		if (hasTmpItem) delete tmpRect;

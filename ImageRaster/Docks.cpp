@@ -29,7 +29,7 @@ MarkerDock::MarkerDock(QWidget* parent) :
 	connect(color1, SIGNAL(currentIndexChanged(int)), this, SIGNAL(dataChanged()));
 	connect(color2, SIGNAL(currentIndexChanged(int)), this, SIGNAL(dataChanged()));
 	connect(weight, SIGNAL(valueChanged(int)), this, SIGNAL(dataChanged()));
-	connect(Font, &QFontComboBox::currentFontChanged, this, &MarkerDock::dataChanged);
+	connect(Font, &QFontComboBox::currentFontChanged, this, &MarkerDock::fontChanged);
 	connect(fontSize, &FontSizeCombo::fontSizeChanged, this, &MarkerDock::dataChanged);
 	connect(checkBox, &QCheckBox::stateChanged, this, &MarkerDock::dataChanged);
 	connect(useBackground, &QCheckBox::stateChanged, this, &MarkerDock::dataChanged);
@@ -172,6 +172,17 @@ void MarkerDock::setMode(int mode) {
 	btn->setChecked(true);
 }
 
+QFont MarkerDock::font() const
+{
+	return Font->currentFont();
+}
+
+void MarkerDock::setFont(const QFont& f)
+{
+	Font->setCurrentFont(f);
+	emit fontChanged(f);
+}
+
 //RulerDock
 RulerDock::RulerDock(int ruler_type, QWidget* parent) :
 	QDockWidget(parent),
@@ -183,7 +194,7 @@ RulerDock::RulerDock(int ruler_type, QWidget* parent) :
 	connect(color1, &ColorEditor::colorChanged, this,  &RulerDock::dataChanged);
 	connect(color2, &ColorEditor::colorChanged, this,  &RulerDock::dataChanged);
 	connect(penWidth, SIGNAL(valueChanged(int)), this, SIGNAL(dataChanged()));
-	connect(Font, &QFontComboBox::currentFontChanged, this, &RulerDock::dataChanged);
+	connect(Font, &QFontComboBox::currentFontChanged, this, &RulerDock::fontChanged);
 	connect(fontSize, &FontSizeCombo::fontSizeChanged, this, &RulerDock::dataChanged);
 	connect(useBackground, &QCheckBox::stateChanged, this, &RulerDock::dataChanged);
 	connect(bw, &QPushButton::clicked, this, &RulerDock::applyPreset);
@@ -347,6 +358,17 @@ void RulerDock::saveTriggered() {
 void RulerDock::loadTriggered() {
 	int i = ((QAction*)sender())->data().toInt();
 	loadProfile(i);
+}
+
+QFont RulerDock::font() const
+{
+	return Font->currentFont();
+}
+
+void RulerDock::setFont(const QFont& f)
+{
+	Font->setCurrentFont(f);
+	emit fontChanged(f);
 }
 
 RulerTools::RulerTools(QWidget* parent):
@@ -806,6 +828,11 @@ CalibrationWizard::CalibrationWizard(const QString& srcImg, QWidget *parent):
 	connect(yScene, SIGNAL(distanceChanged(int)), this->yPixel, SLOT(setNum(int)));
 	connect(this, &QWizard::currentIdChanged, this, &CalibrationWizard::hideNextButton);
 	//setWindowState(Qt::WindowMaximized);
+
+	auto btn = button(QWizard::CustomButton1);
+	btn->setText("&Back");
+	connect(btn, SIGNAL(clicked()), this, SLOT(back()));
+	connect(this, &QWizard::currentIdChanged, [btn](int id) { btn->setEnabled(id != 0); });
 }
 
 void initScene(CalibrationScene* scn, const QString& image)

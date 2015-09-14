@@ -374,6 +374,12 @@ bool RulerModel::insertRuler(RulerItemInterface* r, int row) {
 	return true;
 }
 
+void RulerModel::setFont(const QFont& f)
+{
+	if (myFont != f)
+		setData(index(0, 4), f, Qt::EditRole);
+}
+
 //LineRulerModel
 void LineRulerModel::calculate(int row) {
 	LineRuler* r = (LineRuler*)rulers.at(row);

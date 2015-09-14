@@ -54,6 +54,7 @@ public:
 		QComboBox(widget) 
 	{ 
 		populateList();
+		setCurrentIndex(0);
 		connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(widgetIndexChanged(int)));
 		connect(this, SIGNAL(currentTextChanged(const QString&)), this, SLOT(widgetTextChanged(const QString&)));
 	}

@@ -54,5 +54,6 @@
     <file>Resources/polyline.png</file>
     <file>Resources/legend.png</file>
     <file>Resources/scale.png</file>
+    <file>CropWidget.qml</file>
   </qresource>
 </RCC>

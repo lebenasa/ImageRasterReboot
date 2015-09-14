@@ -70,6 +70,8 @@ public slots:
 	void finishPolygon();
 
 signals:
+	void appStateChanged(int state);
+
 	void mouseEvent(QGraphicsSceneMouseEvent *event, MouseState state);
 	void addMarker(MarkerItem*);
 	void addLR(LineRuler*);

@@ -100,14 +100,14 @@ public:
 			if (!this->isVisible())
 				this->setVisible(true);
 		QFont f = font;
-		f.setPointSize(mySize);
+		f.setPointSize(mySize > 0 ? mySize : 8);
 		T::setFont(f);
 		frame->setRect(boundingRect());
 	}
 	void setFontSize(int size) {
 		mySize = size;
 		QFont f = this->font();
-		f.setPointSize(size);
+		f.setPointSize(size > 0 ? size : 8);
 		setFont(f);
 		if (size <= 0)
 			setVisible(false);

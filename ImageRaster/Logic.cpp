@@ -187,27 +187,38 @@ ScaleLogic::~ScaleLogic() {
 }
 
 void ScaleLogic::showScale(int h, int v) {
+	if (hI != h)
+		updateHScale(h);
+	if (vI != v)
+		updateVScale(v);
+}
+
+void ScaleLogic::updateHScale(int h) {
 	hI = h;
 	for (auto s : hs)
 		s->setVisible(true);
+	hs1->setLine(hLine(hI));
+	hs2->setLine(hLine(hI));
+	hs3->setLine(hLine(hI));
+	updateStyle();
+}
+
+void ScaleLogic::updateVScale(int v) {
 	vI = v;
 	for (auto s : vs)
 		s->setVisible(true);
-	setLength(QString::number(unit.value));
+	vs1->setLine(vLine(vI));
+	vs2->setLine(vLine(vI));
+	vs3->setLine(vLine(vI));
+	updateStyle();
+}
+
+void ScaleLogic::updateStyle()
+{
 	setPenWidth(myPenWidth);
 	setFont(myFont);
 	setFontSize(myFontSize);
 	setStyle(scaleType);
-}
-
-void ScaleLogic::showHScale(int h) {
-	hI = h;
-	setLength(QString::number(unit.value));
-}
-
-void ScaleLogic::showVScale(int v) {
-	vI = v;
-	setLength(QString::number(unit.value));
 }
 
 void ScaleLogic::setPenWidth(int width) {
@@ -219,16 +230,12 @@ void ScaleLogic::setPenWidth(int width) {
 void ScaleLogic::setLength(const QString& txt) {
 	double l = txt.toDouble();
 	unit.value = l;
-	hs1->setLine(hLine(hI));
-	vs1->setLine(vLine(vI));
-	hs2->setLine(hLine(hI));
-	vs2->setLine(vLine(vI));
-	hs3->setLine(hLine(hI));
-	vs3->setLine(vLine(vI));
 	for (auto s : hs)
 		s->setText2(txt + " " + unit.getUnit());
 	for (auto s : vs)
 		s->setText2(txt + " " + unit.getUnit());
+	updateHScale(hI);
+	updateVScale(vI);
 	scene->update();
 }
 
@@ -636,7 +643,7 @@ void Logic::initMarkers() {
 	mapper->addMapping(ui->markerDock->color2, 3);
 	mapper->addMapping(ui->markerDock->checkBox, 4);
 	mapper->addMapping(ui->markerDock->weight, 5);
-	mapper->addMapping(ui->markerDock->Font, 6);
+	//mapper->addMapping(ui->markerDock->Font, 6);
 	mapper->addMapping(ui->markerDock->fontSize, 7);
 	mapper->addMapping(ui->markerDock->useBackground, 8);
 	mapper->addMapping(ui->markerDock->Size, 9);
@@ -650,6 +657,20 @@ void Logic::initMarkers() {
 		mapper, SLOT(setCurrentModelIndex(QModelIndex)));
 	connect(marker, &MarkerLogic::indexChanged, [=]() { ui->markerDock->setMode(marker->currentType()); } );
 	marker->addMarkerContainer();
+
+	connect(ui->markerDock, &MarkerDock::fontChanged, 
+	[this](const QFont& f) {
+		auto cont = marker->model->at(marker->map()->currentIndex());
+		if (cont->font() != f)
+			cont->setFont(f);
+	});
+
+	connect(mapper, &QDataWidgetMapper::currentIndexChanged,
+	[this]() {
+		auto cont = marker->model->at(marker->map()->currentIndex());
+		if (cont->font() != ui->markerDock->font())
+			ui->markerDock->setFont(cont->font());
+	});
 }
 
 void Logic::initUndo() {
@@ -725,6 +746,7 @@ void Logic::initRuler() {
 	ui->prDock->view->setModel(ruler->pr);
 	ui->mlDock->view->setModel(ruler->mr);
 	for (int i=1; i<11; ++i) {
+		if (i == 4) continue;
 		ruler->mapLR->addMapping(ui->lrDock->widgets.at(i-1), i);
 		ruler->mapRR->addMapping(ui->rrDock->widgets.at(i-1), i);
 		ruler->mapCR->addMapping(ui->crDock->widgets.at(i-1), i);
@@ -797,6 +819,13 @@ void Logic::initRuler() {
 	ui->c2Dock->emitData();
 	ui->prDock->emitData();
 	ui->mlDock->emitData();
+
+	connect(ui->lrDock, &RulerDock::fontChanged, ruler->lr, &RulerModel::setFont);
+	connect(ui->rrDock, &RulerDock::fontChanged, ruler->rr, &RulerModel::setFont);
+	connect(ui->crDock, &RulerDock::fontChanged, ruler->cr, &RulerModel::setFont);
+	connect(ui->c2Dock, &RulerDock::fontChanged, ruler->c2, &RulerModel::setFont);
+	connect(ui->prDock, &RulerDock::fontChanged, ruler->pr, &RulerModel::setFont);
+	connect(ui->mlDock, &RulerDock::fontChanged, ruler->mr, &RulerModel::setFont);
 }
 
 void Logic::initScale() {
@@ -815,8 +844,10 @@ void Logic::initScale() {
 	connect(ui->scaleDock->Font, &QFontComboBox::currentFontChanged, scale, &ScaleLogic::setFont);
 	connect(ui->scaleDock->fontSize, &FontSizeCombo::fontSizeChanged, scale, &ScaleLogic::setFontSize);
 	connect(ui->scaleDock->useBackground, &QCheckBox::stateChanged, scale, &ScaleLogic::setHasBackground);
-	connect(ui->scaleDock, &ScaleDock::horizontal_checked, scale, &ScaleLogic::showHScale);
-	connect(ui->scaleDock, &ScaleDock::vertical_checked, scale, &ScaleLogic::showVScale);
+	connect(ui->scaleDock, &ScaleDock::horizontal_checked, scale, &ScaleLogic::updateHScale);
+	connect(ui->scaleDock, &ScaleDock::vertical_checked, scale, &ScaleLogic::updateVScale);
+
+	scale->hideScale();
 }
 
 void Logic::initLegend() {
@@ -856,6 +887,7 @@ void Logic::removeSelected() {
 
 #include "BlendItem.h"
 void Logic::startBlendWizard() {
+	using namespace blend;
 	auto blend = new BlendWizard(myImageName, ui);
 	int accept = blend->exec();
 	if (accept == QWizard::Accepted) {

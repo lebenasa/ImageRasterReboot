@@ -370,6 +370,8 @@ public slots:
 		}
 	}
 	void textToDefault() { calculateAll(); }
+
+	void setFont(const QFont& f);
 };
 
 #include "RasterSettings.h"
