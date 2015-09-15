@@ -826,6 +826,13 @@ void Logic::initRuler() {
 	connect(ui->c2Dock, &RulerDock::fontChanged, ruler->c2, &RulerModel::setFont);
 	connect(ui->prDock, &RulerDock::fontChanged, ruler->pr, &RulerModel::setFont);
 	connect(ui->mlDock, &RulerDock::fontChanged, ruler->mr, &RulerModel::setFont);
+
+	connect(ui->lrDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->lr->setVisible(!t); });
+	connect(ui->rrDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->rr->setVisible(!t); });
+	connect(ui->crDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->cr->setVisible(!t); });
+	connect(ui->c2Dock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->c2->setVisible(!t); });
+	connect(ui->prDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->pr->setVisible(!t); });
+	connect(ui->mlDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->mr->setVisible(!t); });
 }
 
 void Logic::initScale() {
