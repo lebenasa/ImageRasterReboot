@@ -122,47 +122,12 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
 void GraphicsScene::cmrSelect(QGraphicsSceneMouseEvent *event, MouseState ms) {
 	if (MouseState::Click == ms) {
 		QGraphicsScene::mousePressEvent(event);
-		if (mouseGrabberItem() != nullptr)
-			return;
-		if (Qt::LeftButton != event->button()) return;
-		p1 = event->scenePos();
-		//if (!sceneRect().contains(p1)) return;
-		isDragged = true;
-		p2 = p1;
-		for (auto item : items())
-			item->setSelected(false);
 	}
 	else if (MouseState::Move == ms) {
 		QGraphicsScene::mouseMoveEvent(event);
-		//if (mouseGrabberItem() != nullptr)
-		//	return;
-		//if (Qt::LeftButton != event->button()) return;
-		if (!isDragged) return;
-		p2 = event->scenePos();
-		//if (!sceneRect().contains(p2)) return;
-		QRectF r(p1, p2);
-		QPen p(QBrush(Qt::blue), 1, Qt::DashLine);
-		QBrush b(QColor(0, 0, 255, 64));
-		if (hasTmpItem) delete tmpRect;
-		tmpRect = new QGraphicsRectItem(r.normalized());
-		tmpRect->setPen(p);
-		tmpRect->setBrush(b);
-		addItem(tmpRect);
-		hasTmpItem = true;
 	}
 	else if (MouseState::Release == ms) {
 		QGraphicsScene::mouseReleaseEvent(event);
-		if (mouseGrabberItem() != nullptr)
-			return;
-		if (Qt::LeftButton != event->button()) return;
-		isDragged = false;
-		if (hasTmpItem) delete tmpRect;
-		hasTmpItem = false;
-		p2 = (sceneRect().contains(event->scenePos())) ? event->scenePos() : p2;
-		QRectF r = QRectF(p1, p2).normalized();
-		QPainterPath path;
-		path.addRect(r);
-		setSelectionArea(path);
 	}
 }
 

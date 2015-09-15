@@ -114,6 +114,9 @@ ImageRaster::ImageRaster(QWidget *parent)
 
 	logic = new Logic(this);
 	ui.toolBar->setEnabled(false);
+
+	ui.graphicsView->setRubberBandSelectionMode(Qt::ContainsItemBoundingRect);
+	ui.graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 }
 
 ImageRaster::~ImageRaster()
