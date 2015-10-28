@@ -69,7 +69,8 @@ public:
 	int state;
 	LineRulerModel* lr;
 	RectRulerModel* rr;
-	CircleRulerModel* cr;
+	CircleRulerModel* c1;
+	TriCircleRulerModel* cr;
 	Circle2RulerModel* c2;
 	PolyRulerModel* pr;
 	PathRulerModel* mr;
@@ -173,13 +174,15 @@ public slots:
 	void removeMarker(MarkerItem*);
 	void addLR(LineRuler*);
 	void addRR(RectRuler*);
+	void addC1(CircleRuler*);
 	void addCR(const QPointF& p1, const QPointF& p2, const QPointF& p3);
 	void addC2(const QPointF& p1, const QPointF& p2, const QPointF& p3, const QPointF& p4, const QPointF& p5, const QPointF& p6);
 	void addPR(PolyRuler*);
 	void addMR(PathRuler*);
 	void removeLR(LineRuler*);
 	void removeRR(RectRuler*);
-	void removeCR(CircleRuler*);
+	void removeC1(CircleRuler*);
+	void removeCR(TriCircleRuler*);
 	void removeC2(Circle2Ruler*);
 	void removePR(PolyRuler*);
 	void removeMR(PathRuler*);

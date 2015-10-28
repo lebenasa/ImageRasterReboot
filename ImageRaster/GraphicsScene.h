@@ -7,6 +7,7 @@ class RectItem;
 class EllipseItem;
 class LineRuler;
 class RectRuler;
+class CircleRuler;
 class PolyRuler;
 class PathRuler;
 class MarkerItem;
@@ -76,6 +77,7 @@ signals:
 	void addMarker(MarkerItem*);
 	void addLR(LineRuler*);
 	void addRR(RectRuler*);
+	void addC1(CircleRuler*);
 	void addCR(const QPointF&, const QPointF&, const QPointF&);
 	void addC2(const QPointF&, const QPointF&, const QPointF&, const QPointF&, const QPointF&, const QPointF&);
 	void addPR(PolyRuler*);

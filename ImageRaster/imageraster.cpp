@@ -43,7 +43,7 @@ ImageRaster::ImageRaster(QWidget *parent)
 	markerDock->hide();
 	rulerTools = new RulerTools(this);
 	addDockWidget(Qt::RightDockWidgetArea, rulerTools);
-	rulerTools->circle->hide();
+	//rulerTools->circle->hide();
 	rulerTools->circle2->hide();
 	rulerTools->hide();
 	lrDock = new RulerDock(0, this);

@@ -106,7 +106,8 @@ RulerLogic::RulerLogic(Logic* logic):
 {
 	lr = new LineRulerModel(this);
 	rr = new RectRulerModel(this);
-	cr = new CircleRulerModel(this);
+	c1 = new CircleRulerModel(this);
+	cr = new TriCircleRulerModel(this);
 	c2 = new Circle2RulerModel(this);
 	pr = new PolyRulerModel(this);
 	mr = new PathRulerModel(this);
@@ -115,7 +116,7 @@ RulerLogic::RulerLogic(Logic* logic):
 	mapRR = new QDataWidgetMapper(this);
 	mapRR->setModel(rr);
 	mapCR = new QDataWidgetMapper(this);
-	mapCR->setModel(cr);
+	mapCR->setModel(c1);
 	mapC2 = new QDataWidgetMapper(this);
 	mapC2->setModel(c2);
 	mapPR = new QDataWidgetMapper(this);
@@ -128,6 +129,7 @@ RulerLogic::RulerLogic(Logic* logic):
 void RulerLogic::setRealMod(double rw, double rh) {
 	lr->setRealMod(rw, rh); 
 	rr->setRealMod(rw, rh); 
+	c1->setRealMod(rw, rh);
 	cr->setRealMod(rw, rh); 
 	c2->setRealMod(rw, rh); 
 	pr->setRealMod(rw, rh);
@@ -137,6 +139,7 @@ void RulerLogic::setRealMod(double rw, double rh) {
 void RulerLogic::setUnit(int unit) {
 	lr->setUnit((Unit::UnitType)unit);
 	rr->setUnit((Unit::UnitType)unit);
+	c1->setUnit((Unit::UnitType)unit);
 	cr->setUnit((Unit::UnitType)unit);
 	c2->setUnit((Unit::UnitType)unit);
 	pr->setUnit((Unit::UnitType)unit);
@@ -157,6 +160,8 @@ RulerModel* RulerLogic::modelAt(int RulerItemType) {
 		return pr;
 	case 14:
 		return mr;
+	case 29:
+		return c1;
 	default:
 		return lr;
 	}
@@ -451,11 +456,20 @@ void UndoLogic::addRR(RectRuler* r) {
 	logic->ui->rrDock->emitData();
 }
 
+void UndoLogic::addC1(CircleRuler* r)
+{
+	auto redo = [this](CircleRuler* r) { scene->addItem(r); ruler->c1->addRuler(r); ruler->mapCR->toLast(); };
+	auto undo = [this](CircleRuler* r) { scene->removeItem(r); ruler->c1->removeRuler(r); ruler->mapCR->toLast(); };
+	auto cmd = new ItemUndo<CircleRuler>(undo, redo, r);
+	stack->push(cmd);
+	logic->ui->crDock->emitData();
+}
+
 void UndoLogic::addCR(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
 	auto r = ruler->cr->createRuler(p1, p2, p3);
-	auto redo = [this](CircleRuler* r) { scene->addItem(r); ruler->cr->addRuler(r); ruler->mapCR->toLast(); };
-	auto undo = [this](CircleRuler* r) { scene->removeItem(r); ruler->cr->removeRuler(r); ruler->mapCR->toLast(); };
-	auto cmd = new ItemUndo<CircleRuler>(undo, redo, r);
+	auto redo = [this](TriCircleRuler* r) { scene->addItem(r); ruler->cr->addRuler(r); ruler->mapCR->toLast(); };
+	auto undo = [this](TriCircleRuler* r) { scene->removeItem(r); ruler->cr->removeRuler(r); ruler->mapCR->toLast(); };
+	auto cmd = new ItemUndo<TriCircleRuler>(undo, redo, r);
 	stack->push(cmd);
 }
 
@@ -497,10 +511,18 @@ void UndoLogic::removeRR(RectRuler* r) {
 	stack->push(cmd);
 }
 
-void UndoLogic::removeCR(CircleRuler* r) {
-	auto undo = [this](CircleRuler* item) { logic->scene->addItem(item); ruler->cr->addRuler(item); };
-	auto redo = [this](CircleRuler* item) { logic->scene->removeItem(item); ruler->cr->removeRuler(item); };
+void UndoLogic::removeC1(CircleRuler* r)
+{
+	auto undo = [this](CircleRuler* item) { logic->scene->addItem(item); ruler->c1->addRuler(item); };
+	auto redo = [this](CircleRuler* item) { logic->scene->removeItem(item); ruler->c1->removeRuler(item); };
 	auto cmd = new ItemUndo<CircleRuler>(undo, redo, r);
+	stack->push(cmd);
+}
+
+void UndoLogic::removeCR(TriCircleRuler* r) {
+	auto undo = [this](TriCircleRuler* item) { logic->scene->addItem(item); ruler->cr->addRuler(item); };
+	auto redo = [this](TriCircleRuler* item) { logic->scene->removeItem(item); ruler->cr->removeRuler(item); };
+	auto cmd = new ItemUndo<TriCircleRuler>(undo, redo, r);
 	stack->push(cmd);
 }
 
@@ -563,7 +585,9 @@ void UndoLogic::removeItems(QList<QGraphicsItem*> items) {
 		else if (item->type() == RectRuler::Type)
 			removeRR((RectRuler*)item);
 		else if (item->type() == CircleRuler::Type)
-			removeCR((CircleRuler*)item);
+			removeC1(qgraphicsitem_cast<CircleRuler*>(item));
+		else if (item->type() == TriCircleRuler::Type)
+			removeCR((TriCircleRuler*)item);
 		else if (item->type() == Circle2Ruler::Type)
 			removeC2((Circle2Ruler*)item);
 		else if (item->type() == PolyRuler::Type)
@@ -695,6 +719,7 @@ void Logic::initUndo() {
 
 	connect(scene, &GraphicsScene::addLR, undo, &UndoLogic::addLR);
 	connect(scene, &GraphicsScene::addRR, undo, &UndoLogic::addRR);
+	connect(scene, &GraphicsScene::addC1, undo, &UndoLogic::addC1);
 	connect(scene, &GraphicsScene::addCR, undo, &UndoLogic::addCR);
 	connect(scene, &GraphicsScene::addC2, undo, &UndoLogic::addC2);
 	connect(scene, &GraphicsScene::addPR, undo, &UndoLogic::addPR);
@@ -741,7 +766,7 @@ void Logic::initRuler() {
 	ruler = new RulerLogic(this);
 	ui->lrDock->view->setModel(ruler->lr);
 	ui->rrDock->view->setModel(ruler->rr);
-	ui->crDock->view->setModel(ruler->cr);
+	ui->crDock->view->setModel(ruler->c1);
 	ui->c2Dock->view->setModel(ruler->c2);
 	ui->prDock->view->setModel(ruler->pr);
 	ui->mlDock->view->setModel(ruler->mr);
@@ -782,7 +807,7 @@ void Logic::initRuler() {
 
 	connect(ui->lrDock, &RulerDock::defaultText, ruler->lr, &RulerModel::textToDefault);
 	connect(ui->rrDock, &RulerDock::defaultText, ruler->rr, &RulerModel::textToDefault);
-	connect(ui->crDock, &RulerDock::defaultText, ruler->cr, &RulerModel::textToDefault);
+	connect(ui->crDock, &RulerDock::defaultText, ruler->c1, &RulerModel::textToDefault);
 	connect(ui->c2Dock, &RulerDock::defaultText, ruler->c2, &RulerModel::textToDefault);
 	connect(ui->prDock, &RulerDock::defaultText, ruler->pr, &RulerModel::textToDefault);
 	connect(ui->mlDock, &RulerDock::defaultText, ruler->mr, &RulerModel::textToDefault);
@@ -822,17 +847,24 @@ void Logic::initRuler() {
 
 	connect(ui->lrDock, &RulerDock::fontChanged, ruler->lr, &RulerModel::setFont);
 	connect(ui->rrDock, &RulerDock::fontChanged, ruler->rr, &RulerModel::setFont);
-	connect(ui->crDock, &RulerDock::fontChanged, ruler->cr, &RulerModel::setFont);
+	connect(ui->crDock, &RulerDock::fontChanged, ruler->c1, &RulerModel::setFont);
 	connect(ui->c2Dock, &RulerDock::fontChanged, ruler->c2, &RulerModel::setFont);
 	connect(ui->prDock, &RulerDock::fontChanged, ruler->pr, &RulerModel::setFont);
 	connect(ui->mlDock, &RulerDock::fontChanged, ruler->mr, &RulerModel::setFont);
 
-	connect(ui->lrDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->lr->setVisible(!t); });
-	connect(ui->rrDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->rr->setVisible(!t); });
-	connect(ui->crDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->cr->setVisible(!t); });
-	connect(ui->c2Dock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->c2->setVisible(!t); });
-	connect(ui->prDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->pr->setVisible(!t); });
-	connect(ui->mlDock->toggleText, &QCheckBox::toggled, [this](bool t) { ruler->mr->setVisible(!t); });
+	//connect(ui->lrDock->toggleText, &QCheckBox::toggled, [this]() { ruler->lr->setVisible(!ui->lrDock->toggleText->isChecked()); });
+	//connect(ui->rrDock->toggleText, &QCheckBox::toggled, [this]() { ruler->rr->setVisible(!ui->rrDock->toggleText->isChecked()); });
+	//connect(ui->crDock->toggleText, &QCheckBox::toggled, [this]() { ruler->c1->setVisible(!ui->crDock->toggleText->isChecked()); });
+	//connect(ui->c2Dock->toggleText, &QCheckBox::toggled, [this]() { ruler->c2->setVisible(!ui->c2Dock->toggleText->isChecked()); });
+	//connect(ui->prDock->toggleText, &QCheckBox::toggled, [this]() { ruler->pr->setVisible(!ui->prDock->toggleText->isChecked()); });
+	//connect(ui->mlDock->toggleText, &QCheckBox::toggled, [this]() { ruler->mr->setVisible(!ui->mlDock->toggleText->isChecked()); });
+
+	ruler->mapLR->addMapping(ui->lrDock->toggleText, 0);
+	ruler->mapRR->addMapping(ui->rrDock->toggleText, 0);
+	ruler->mapCR->addMapping(ui->crDock->toggleText, 0);
+	ruler->mapC2->addMapping(ui->c2Dock->toggleText, 0);
+	ruler->mapPR->addMapping(ui->prDock->toggleText, 0);
+	ruler->mapMR->addMapping(ui->mlDock->toggleText, 0);
 }
 
 void Logic::initScale() {

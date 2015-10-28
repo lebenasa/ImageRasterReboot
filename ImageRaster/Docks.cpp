@@ -197,6 +197,7 @@ RulerDock::RulerDock(int ruler_type, QWidget* parent) :
 	connect(Font, &QFontComboBox::currentFontChanged, this, &RulerDock::fontChanged);
 	connect(fontSize, &FontSizeCombo::fontSizeChanged, this, &RulerDock::dataChanged);
 	connect(useBackground, &QCheckBox::stateChanged, this, &RulerDock::dataChanged);
+	connect(toggleText, &QCheckBox::stateChanged, this, &RulerDock::dataChanged);
 	connect(bw, &QPushButton::clicked, this, &RulerDock::applyPreset);
 	connect(wb, &QPushButton::clicked, this, &RulerDock::applyPreset);
 	connect(fuchsia, &QPushButton::clicked, this, &RulerDock::applyPreset);

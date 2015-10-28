@@ -113,21 +113,46 @@ public:
 	}
 };
 
+class CircleRuler:
+	public RulerItem<EllipseItem, QRectF>
+{
+	QPointF calculateTextPos() const;
+public:
+	CircleRuler(const QRectF& rect, QGraphicsItem* parent=0):
+		RulerItem<EllipseItem, QRectF>(rect, parent) {}
+
+	enum  { Type = UserType + 29 };
+	int type() const { return Type; }
+
+	void setText(const QString& text) override {
+		label->setText(text);
+		label->setPos(calculateTextPos());
+	}
+	void setFont(const QFont& f) override {
+		label->setFont(f);
+		label->setPos(calculateTextPos());
+	}
+	void setFontSize(int size) override {
+		label->setFontSize(size);
+		label->setPos(calculateTextPos());
+	}
+};
+
 struct Triplet {
 	QPointF p1, p2, p3;
 	Triplet(const QPointF& p1 = QPointF(), const QPointF& p2 = QPointF(), const QPointF& p3 = QPointF()):
 		p1(p1), p2(p2), p3(p3) { }
 };
 
-class CircleRuler:
+class TriCircleRuler:
 	public RulerItem<EllipseItem, QRectF>
 {
 	QPointF calculateTextPos() const;
 	Triplet originalPoints;
 public:
-	CircleRuler(const QRectF& rect, QGraphicsItem* parent=0):
+	TriCircleRuler(const QRectF& rect, QGraphicsItem* parent=0):
 		RulerItem<EllipseItem, QRectF>(rect, parent) {}
-	~CircleRuler() { }
+	~TriCircleRuler() { }
 
 	enum  { Type = UserType + 11 };
 	int type() const { return Type; }
@@ -348,9 +373,7 @@ public:
 	//Supply calibrated value divided by scene dimension for this function!!
 
 	void setVisible(bool show) {
-		visible = show;
-		for (int i=0; i<rowCount(); ++i)
-			setData(index(i, 0), show);
+		setData(index(0, 0), show);
 	}
 	bool isVisible() const { return visible; }
 public slots:
@@ -443,7 +466,7 @@ public:
 	CircleRulerModel(QObject* parent=0):
 		RulerModel(parent)
 	{
-		auto s = Settings("Ruler2L");
+		auto s = Settings("Ruler9L");
 		myColor1 = s.color1();
 		myColor2 = s.color2();
 		myPenWidth = s.penWidth();
@@ -452,7 +475,7 @@ public:
 		myHasBackground = s.hasBackground();
 	}
 	~CircleRulerModel() {
-		auto s = Settings("Ruler2L");
+		auto s = Settings("Ruler9L");
 		s.setColor1(myColor1);
 		s.setColor2(myColor2);
 		s.setPenWidth(myPenWidth);
@@ -463,8 +486,39 @@ public:
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	bool addRuler(CircleRuler* r) { return RulerModel::addRuler((RulerItemInterface*)r) ; }
+};
 
-	CircleRuler* createRuler(const QPointF& p1, const QPointF& p2, const QPointF& p3); //add it to the scene later
+class TriCircleRulerModel:
+	public RulerModel
+{
+	void calculate(int row);
+public:
+	TriCircleRulerModel(QObject* parent=0):
+		RulerModel(parent)
+	{
+		auto s = Settings("Ruler2L");
+		myColor1 = s.color1();
+		myColor2 = s.color2();
+		myPenWidth = s.penWidth();
+		myFont = s.font();
+		myFontSize = s.fontSize();
+		myHasBackground = s.hasBackground();
+	}
+	~TriCircleRulerModel() {
+		auto s = Settings("Ruler2L");
+		s.setColor1(myColor1);
+		s.setColor2(myColor2);
+		s.setPenWidth(myPenWidth);
+		s.setFont(myFont);
+		s.setFontSize(myFontSize);
+		s.setHasBackground(myHasBackground);
+	}
+
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	bool addRuler(TriCircleRuler* r) { return RulerModel::addRuler((RulerItemInterface*)r) ; }
+
+	TriCircleRuler* createRuler(const QPointF& p1, const QPointF& p2, const QPointF& p3); //add it to the scene later
+	TriCircleRuler* createRuler(const QPointF& p1, const QPointF& p2);
 };
 
 class Circle2RulerModel:

@@ -4,10 +4,10 @@
 
 QPointF LineRuler::calculateTextPos() const {
 	QRectF bound = TextRect();
-	int dx = line().p2().x() - line().p1().x();
-	int dy = line().p2().y() - line().p1().y();
-	QPointF pos = boundingRect().bottomLeft() + QPointF(boundingRect().width()/2, 0);
-	QPointF offset = QPointF(-bound.width()/2, 0);
+	//int dx = line().p2().x() - line().p1().x();
+	//int dy = line().p2().y() - line().p1().y();
+	//QPointF pos = boundingRect().bottomLeft() + QPointF(boundingRect().width()/2, 0);
+	//QPointF offset = QPointF(-bound.width()/2, 0);
 	//if (line().length() > bound.width()) {
 	//	label->setTransformOriginPoint(bound.center());
 	//	label->setRotation(M_PI-line().angle());
@@ -17,6 +17,8 @@ QPointF LineRuler::calculateTextPos() const {
 	//	pos = boundingRect().bottomLeft() + QPointF(boundingRect().width()/2, 0);
 	//	offset = QPointF(-bound.width()/2, 0);
 	//}
+	auto pos = boundingRect().center();
+	auto offset = QPointF(-1.0 * bound.width() / 2, -1.0 * bound.height() / 2);
 	return pos + offset;
 }
 
@@ -28,6 +30,13 @@ QPointF RectRuler::calculateTextPos() const {
 }
 
 QPointF CircleRuler::calculateTextPos() const {
+	QPointF bl = boundingRect().bottomLeft();
+	bl.setX(bl.x() + boundingRect().width()/2 - TextRect().width()/2);
+	bl.setY(bl.y() + 10);
+	return bl;
+}
+
+QPointF TriCircleRuler::calculateTextPos() const {
 	QPointF bl = boundingRect().bottomLeft();
 	bl.setX(bl.x() + boundingRect().width()/2 - TextRect().width()/2);
 	bl.setY(bl.y() + 10);
@@ -117,8 +126,6 @@ QVariant RulerModel::data(const QModelIndex& index, int role) const {
 	if (Qt::CheckStateRole == role) {
 		if (6 == c)
 			return (myHasBackground) ? Qt::Checked : Qt::Unchecked;
-		else if (0 == c)
-			return (visible) ? Qt::Checked : Qt::Unchecked;
 	}
 	else if (Qt::DisplayRole == role || Qt::EditRole == role) {
 		switch (c) {
@@ -164,7 +171,7 @@ QVariant RulerModel::data(const QModelIndex& index, int role) const {
 Qt::ItemFlags RulerModel::flags(const QModelIndex& index) const {
 	int c = index.column();
 	if (0 == c)
-		return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
+		return Qt::ItemIsEditable | Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable;
 	else if (1 == c)
 		return Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable;
 	else if (2 == c)
@@ -219,13 +226,13 @@ bool RulerModel::setData(const QModelIndex& index, const QVariant& value, int ro
 	auto r = index.row();
 	auto c = index.column();
 	if (Qt::CheckStateRole == role) {
-		if (0 == c) {
-			rulers.at(r)->setVisible(value.toBool());
-			visible = value.toBool();
-		}
-		else if (6 == c) {
+		if (6 == c) {
 			rulers.at(r)->setHasBackground(value.toBool());
 			myHasBackground = value.toBool();
+		}
+		else if (0 == c) {
+			rulers.at(r)->setVisible(value.toBool());
+			visible = value.toBool();
 		}
 		emit dataChanged(index, index);
 		return true;
@@ -233,7 +240,8 @@ bool RulerModel::setData(const QModelIndex& index, const QVariant& value, int ro
 	else if (Qt::DisplayRole == role || Qt::EditRole == role) {
 		switch (c) {
 		case 0:
-			rulers.at(r)->setVisible(value.toBool());
+			for (auto ruler : rulers)
+				ruler->setVisible(value.toBool());
 			visible = value.toBool();
 			break;
 		case 1:
@@ -433,6 +441,33 @@ QVariant RectRulerModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 //CircleRulerModel
+void CircleRulerModel::calculate(int row) {
+	auto r = (CircleRuler*)rulers.at(row);
+	auto l = r->rect();
+	data1.at(row)->prefix = "Diameter";
+	data1.at(row)->isUnused = false;
+	data3.at(row)->isUnused = true;
+	setData(index(row, 8), l.width()*realWidth);
+	Unit u = 3.14 * 0.25 * *data1.at(row) * *data1.at(row);
+	data2.at(row)->power = 2;
+	data2.at(row)->prefix = "Area";
+	data2.at(row)->isUnused = false;
+	setData(index(row, 9), u.value);
+}
+
+QVariant CircleRulerModel::headerData(int section, Qt::Orientation orientation, int role) const {
+	if (Qt::DisplayRole != role) return QVariant();
+	if (Qt::Horizontal == orientation) {
+		if (8 == section)
+			return "Diameter " + QString::fromLatin1("(µm)");
+		else if (9 == section)
+			return "Area " + QString::fromLatin1("(µm²)");
+	}
+	return RulerModel::headerData(section, orientation, role);
+}
+
+
+//TriCircleRulerModel
 QPointF operator*(const QPointF& point, const QPointF& multiplier) {
 	QPointF res;
 	res.setX(point.x()*multiplier.x());
@@ -466,8 +501,8 @@ QRectF rectFrom3Point(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
 	return QRectF(TL, QSizeF(2*radius, 2*radius));
 }
 
-void CircleRulerModel::calculate(int row) {
-	auto cr = (CircleRuler*)rulers.at(row);
+void TriCircleRulerModel::calculate(int row) {
+	auto cr = (TriCircleRuler*)rulers.at(row);
 	auto tr = cr->getTriplet();
 	//Convert to real coordinate
 	QPointF realDimension = QPointF(realWidth, realHeight);
@@ -496,7 +531,7 @@ void CircleRulerModel::calculate(int row) {
 	setData(index(row, 9), r_area);
 }
 
-QVariant CircleRulerModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant TriCircleRulerModel::headerData(int section, Qt::Orientation orientation, int role) const {
 	if (Qt::DisplayRole != role) return QVariant();
 	if (Qt::Horizontal == orientation) {
 		if (8 == section)
@@ -509,10 +544,15 @@ QVariant CircleRulerModel::headerData(int section, Qt::Orientation orientation, 
 	return RulerModel::headerData(section, orientation, role);
 }
 
-CircleRuler* CircleRulerModel::createRuler(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
-	auto circleRuler = new CircleRuler(rectFrom3Point(p1, p2, p3));
-	circleRuler->setTriplet(p1, p2, p3);
-	return circleRuler;
+TriCircleRuler* TriCircleRulerModel::createRuler(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
+	auto cr = new TriCircleRuler(rectFrom3Point(p1, p2, p3));
+	cr->setTriplet(p1, p2, p3);
+	return cr;
+}
+
+TriCircleRuler* TriCircleRulerModel::createRuler(const QPointF& p1, const QPointF& p2)
+{
+	return nullptr;
 }
 
 //Circle2RulerModel

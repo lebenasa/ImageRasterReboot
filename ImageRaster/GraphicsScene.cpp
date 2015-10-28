@@ -29,12 +29,18 @@ void GraphicsScene::setAppState(int curState) {
 	if (AppState::Select == appState || AppState::Scale == appState || AppState::Legend == appState || AppState::Calibration == appState) {
 		disconnect(this, &GraphicsScene::mouseEvent, this, 0);
 		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrSelect);
+		for (auto view : views())
+			view->setDragMode(QGraphicsView::RubberBandDrag);
 	}
 	else if (AppState::Marker == appState) {
 		setMarkerType(markerType);
+		for (auto view : views())
+			view->setDragMode(QGraphicsView::NoDrag);
 	}
 	else if (AppState::Measure == appState) {
 		setRulerState(rulerState);
+		for (auto view : views())
+			view->setDragMode(QGraphicsView::NoDrag);
 	}
 
 	emit appStateChanged(curState);
@@ -139,11 +145,17 @@ void GraphicsScene::cmrMarkerArrow(QGraphicsSceneMouseEvent *event, MouseState m
 		p1 = event->scenePos();
 		if (!sceneRect().contains(p1)) return;
 		//if (items(p1).count() > 1) return;	//To ensure no overlap
-		if (items(p1).count() > 1) {
+		if (items(p1).count() >= 1) {
 			for (auto item : items(p1)) {
 				if (auto i = qgraphicsitem_cast<MarkerItem*>(item)) {
-					if (i->isSinglePoint()) return;
-					if (i->boundingRect().center() == p1) return;
+					if (i->isSinglePoint()) {
+						auto ctr = i->boundingRect().topLeft();
+						auto chk = QRectF(ctr.x() - 5, ctr.y() - 5, 10, 10);
+						if (chk.contains(p1)) return;
+					}
+					auto ctr = i->boundingRect().center();
+					auto chk = QRectF(ctr.x() - 5, ctr.y() - 5, 10, 10);
+					if (chk.contains(p1)) return;
 				}
 			}
 		}
@@ -197,11 +209,13 @@ void GraphicsScene::cmrMarkerRectangle(QGraphicsSceneMouseEvent *event, MouseSta
 		p1 = event->scenePos();
 		if (!sceneRect().contains(p1)) return;
 		//if (items(p1).count() > 1) return;	//To ensure no overlap
-		if (items(p1).count() > 1) {
+		if (items(p1).count() >= 1) {
 			for (auto item : items(p1)) {
 				if (auto i = qgraphicsitem_cast<MarkerItem*>(item)) {
-					if (i->isSinglePoint()) return;
-					if (i->boundingRect().center() == p1) return;
+					//if (i->isSinglePoint()) return;
+					auto ctr = i->boundingRect().center();
+					auto chk = QRectF(ctr.x() - 5, ctr.y() - 5, 10, 10);
+					if (chk.contains(p1)) return;
 				}
 			}
 		}
@@ -255,11 +269,13 @@ void GraphicsScene::cmrMarkerCircle(QGraphicsSceneMouseEvent *event, MouseState 
 		p1 = event->scenePos();
 		if (!sceneRect().contains(p1)) return;
 		//if (items(p1).count() > 1) return;	//To ensure no overlap
-		if (items(p1).count() > 1) {
+		if (items(p1).count() >= 1) {
 			for (auto item : items(p1)) {
 				if (auto i = qgraphicsitem_cast<MarkerItem*>(item)) {
-					if (i->isSinglePoint()) return;
-					if (i->boundingRect().center() == p1) return;
+					//if (i->isSinglePoint()) return;
+					auto ctr = i->boundingRect().center();
+					auto chk = QRectF(ctr.x() - 5, ctr.y() - 5, 10, 10);
+					if (chk.contains(p1)) return;
 				}
 			}
 		}
@@ -404,7 +420,6 @@ void GraphicsScene::cmrRulerRectangle(QGraphicsSceneMouseEvent *event, MouseStat
 		QLineF line = QLineF(p1, p2);
 		if (line.length() < 5.0)
 			return;
-		//Call create arrow marker action:
 		QRectF r = QRectF(p1, p2);
 		RectRuler* ruler = new RectRuler(r.normalized());
 		emit addRR(ruler);
@@ -413,46 +428,90 @@ void GraphicsScene::cmrRulerRectangle(QGraphicsSceneMouseEvent *event, MouseStat
 
 void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState ms)	{
 	if (Qt::RightButton == event->button()) {
-		interceptLeftClick = true;
-		return;
-	}
-	if (interceptLeftClick) {
-		interceptLeftClick = false;
 		return;
 	}
 	if (MouseState::Click == ms) {
-		if (!sceneRect().contains(event->scenePos())) return;
-		//if (items(event->scenePos()).count() > 1) return;	//To ensure no overlap
-		if (0 == click) {
-			p1 = event->scenePos();
-			++click;
-			tmpCircle = new EllipseItem(rectFromCenter(p1));
-			tmpCircle->setPenColor(Qt::black, Qt::white);
-			tmpCircle->setPenWidth(2);
-			addItem(tmpCircle);
-			hasTmpItem = true;
-		}
-		else if (1 == click) {
-			p2 = event->scenePos();
-			++click;
-			EllipseItem* item = new EllipseItem(rectFromCenter(p2), tmpCircle);
-			item->setPenColor(Qt::black, Qt::white);
-			item->setPenWidth(2);
-			addItem(item);
-		}
-		else if (2 == click) {
-			p3 = event->scenePos();
-			click = 0;
-			delete tmpCircle;
-			hasTmpItem = false;
-			emit addCR(p1, p2, p3);
-		}
+		p1 = event->scenePos();
+		if (!sceneRect().contains(p1)) return;
+		//if (items(p1).count() > 1) return;	//To ensure no overlap
+		isDragged = true;
+		p2 = p1 + QPointF(1, 1);					//To ensure a valid QLineF
 	}
 	else if (MouseState::Move == ms) {
+		if (!isDragged) return;
+		p2 = event->scenePos();
+		if (sceneRect().contains(p2)) {
+			auto r = QRectF(p1, p2).normalized();
+			auto ln = 0.5 * QLineF(p1, p2).length();
+			auto circ = QRectF(r.center() - QPointF(ln, ln), r.center() + QPointF(ln, ln));
+			if (!hasTmpItem) {
+				tmpCircle = new EllipseItem(circ);
+				tmpCircle->setPenColor(Qt::black, Qt::white);
+				addItem(tmpCircle);
+			}
+			else {
+				tmpCircle->setRect(circ);
+			}
+			hasTmpItem = true;
+		}
+		else {
+			if (hasTmpItem) delete tmpCircle;
+			hasTmpItem = false;
+			isDragged = false;
+		}
 	}
 	else if (MouseState::Release == ms) {
+		if (!isDragged) return;
+		isDragged = false;
+		if (hasTmpItem) delete tmpCircle;
+		hasTmpItem = false;
+		p2 = (sceneRect().contains(event->scenePos())) ? event->scenePos() : p2;
+		QLineF line = QLineF(p1, p2);
+		QRectF r = QRectF(p1, p2).normalized();
+		auto ln = 0.5 * line.length();
+		auto circ = QRectF(r.center() - QPointF(ln, ln), r.center() + QPointF(ln, ln));
+		CircleRuler* ruler = new CircleRuler(circ);
+		emit addC1(ruler);
 	}
 }
+
+//void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState ms)	{
+//	if (Qt::RightButton == event->button()) {
+//		return;
+//	}
+//	if (MouseState::Click == ms) {
+//		if (!sceneRect().contains(event->scenePos())) return;
+//		if (items(event->scenePos()).count() > 1) return;	//To ensure no overlap
+//		if (0 == click) {
+//			p1 = event->scenePos();
+//			++click;
+//			tmpCircle = new EllipseItem(rectFromCenter(p1));
+//			tmpCircle->setPenColor(Qt::black, Qt::white);
+//			tmpCircle->setPenWidth(2);
+//			addItem(tmpCircle);
+//			hasTmpItem = true;
+//		}
+//		else if (1 == click) {
+//			p2 = event->scenePos();
+//			++click;
+//			EllipseItem* item = new EllipseItem(rectFromCenter(p2), tmpCircle);
+//			item->setPenColor(Qt::black, Qt::white);
+//			item->setPenWidth(2);
+//			addItem(item);
+//		}
+//		else if (2 == click) {
+//			p3 = event->scenePos();
+//			click = 0;
+//			delete tmpCircle;
+//			hasTmpItem = false;
+//			emit addCR(p1, p2, p3);
+//		}
+//	}
+//	else if (MouseState::Move == ms) {
+//	}
+//	else if (MouseState::Release == ms) {
+//	}
+//}
 
 void GraphicsScene::cmrRulerCentertoCenter(QGraphicsSceneMouseEvent *event, MouseState ms)	{
 	if (Qt::RightButton == event->button()) {
