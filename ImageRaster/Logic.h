@@ -77,6 +77,7 @@ public:
 
 	QDataWidgetMapper* mapLR;
 	QDataWidgetMapper* mapRR;
+	QDataWidgetMapper* mapC1;
 	QDataWidgetMapper* mapCR;
 	QDataWidgetMapper* mapC2;
 	QDataWidgetMapper* mapPR;

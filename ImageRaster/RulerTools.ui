@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>100</height>
+    <height>150</height>
    </rect>
   </property>
   <property name="maximumSize">
    <size>
     <width>524287</width>
-    <height>100</height>
+    <height>150</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -21,20 +21,26 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="2">
-     <widget class="QPushButton" name="circle2">
+    <item row="3" column="1">
+     <widget class="QPushButton" name="circle">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="toolTip">
-       <string>Calculate distance between two center</string>
+       <string>Calculate circular area</string>
       </property>
       <property name="statusTip">
-       <string>Click three points and another three points to measure</string>
+       <string>Click three points in scene to measure</string>
       </property>
       <property name="text">
-       <string>Distance</string>
+       <string>Tri Point</string>
       </property>
       <property name="icon">
        <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/TwoCircle.png</normaloff>:/Resources/TwoCircle.png</iconset>
+        <normaloff>:/Resources/Circle.png</normaloff>:/Resources/Circle.png</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -70,7 +76,81 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="circle3">
+      <property name="text">
+       <string>Circle</string>
+      </property>
+      <property name="icon">
+       <iconset resource="imageraster.qrc">
+        <normaloff>:/Resources/Circle.png</normaloff>:/Resources/Circle.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="circle2">
+      <property name="toolTip">
+       <string>Calculate distance between two center</string>
+      </property>
+      <property name="statusTip">
+       <string>Click three points and another three points to measure</string>
+      </property>
+      <property name="text">
+       <string>Distance</string>
+      </property>
+      <property name="icon">
+       <iconset resource="imageraster.qrc">
+        <normaloff>:/Resources/TwoCircle.png</normaloff>:/Resources/TwoCircle.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QPushButton" name="polygon">
+      <property name="toolTip">
+       <string>Calculate polygonal area</string>
+      </property>
+      <property name="statusTip">
+       <string>Click arround object and right-click to finish measurement</string>
+      </property>
+      <property name="text">
+       <string>Polygon</string>
+      </property>
+      <property name="icon">
+       <iconset resource="imageraster.qrc">
+        <normaloff>:/Resources/Polygon.png</normaloff>:/Resources/Polygon.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="1">
+     <widget class="QPushButton" name="multiline">
+      <property name="toolTip">
+       <string>Calculate path length</string>
+      </property>
+      <property name="statusTip">
+       <string>Click to form path and right-click to finish measurement</string>
+      </property>
+      <property name="text">
+       <string>Multi Line</string>
+      </property>
+      <property name="icon">
+       <iconset resource="imageraster.qrc">
+        <normaloff>:/Resources/polyline.png</normaloff>:/Resources/polyline.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
      <widget class="QPushButton" name="rectangle">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -95,85 +175,6 @@
        <bool>true</bool>
       </property>
      </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="circle">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="toolTip">
-       <string>Calculate circular area</string>
-      </property>
-      <property name="statusTip">
-       <string>Click three points in scene to measure</string>
-      </property>
-      <property name="text">
-       <string>Circle</string>
-      </property>
-      <property name="icon">
-       <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Circle.png</normaloff>:/Resources/Circle.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QPushButton" name="polygon">
-      <property name="toolTip">
-       <string>Calculate polygonal area</string>
-      </property>
-      <property name="statusTip">
-       <string>Click arround object and right-click to finish measurement</string>
-      </property>
-      <property name="text">
-       <string>Polygon</string>
-      </property>
-      <property name="icon">
-       <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Polygon.png</normaloff>:/Resources/Polygon.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QPushButton" name="multiline">
-      <property name="toolTip">
-       <string>Calculate path length</string>
-      </property>
-      <property name="statusTip">
-       <string>Click to form path and right-click to finish measurement</string>
-      </property>
-      <property name="text">
-       <string>Multi Line</string>
-      </property>
-      <property name="icon">
-       <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/polyline.png</normaloff>:/Resources/polyline.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>

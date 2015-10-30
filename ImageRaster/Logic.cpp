@@ -116,13 +116,15 @@ RulerLogic::RulerLogic(Logic* logic):
 	mapRR = new QDataWidgetMapper(this);
 	mapRR->setModel(rr);
 	mapCR = new QDataWidgetMapper(this);
-	mapCR->setModel(c1);
+	mapCR->setModel(cr);
 	mapC2 = new QDataWidgetMapper(this);
 	mapC2->setModel(c2);
 	mapPR = new QDataWidgetMapper(this);
 	mapPR->setModel(pr);
 	mapMR = new QDataWidgetMapper(this);
 	mapMR->setModel(mr);
+	mapC1 = new QDataWidgetMapper(this);
+	mapC1->setModel(c1);
 
 }
 
@@ -458,11 +460,11 @@ void UndoLogic::addRR(RectRuler* r) {
 
 void UndoLogic::addC1(CircleRuler* r)
 {
-	auto redo = [this](CircleRuler* r) { scene->addItem(r); ruler->c1->addRuler(r); ruler->mapCR->toLast(); };
-	auto undo = [this](CircleRuler* r) { scene->removeItem(r); ruler->c1->removeRuler(r); ruler->mapCR->toLast(); };
+	auto redo = [this](CircleRuler* r) { scene->addItem(r); ruler->c1->addRuler(r); ruler->mapC1->toLast(); };
+	auto undo = [this](CircleRuler* r) { scene->removeItem(r); ruler->c1->removeRuler(r); ruler->mapC1->toLast(); };
 	auto cmd = new ItemUndo<CircleRuler>(undo, redo, r);
 	stack->push(cmd);
-	logic->ui->crDock->emitData();
+	logic->ui->c1Dock->emitData();
 }
 
 void UndoLogic::addCR(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
@@ -766,14 +768,16 @@ void Logic::initRuler() {
 	ruler = new RulerLogic(this);
 	ui->lrDock->view->setModel(ruler->lr);
 	ui->rrDock->view->setModel(ruler->rr);
-	ui->crDock->view->setModel(ruler->c1);
+	ui->crDock->view->setModel(ruler->cr);
 	ui->c2Dock->view->setModel(ruler->c2);
 	ui->prDock->view->setModel(ruler->pr);
 	ui->mlDock->view->setModel(ruler->mr);
+	ui->c1Dock->view->setModel(ruler->c1);
 	for (int i=1; i<11; ++i) {
 		if (i == 4) continue;
 		ruler->mapLR->addMapping(ui->lrDock->widgets.at(i-1), i);
 		ruler->mapRR->addMapping(ui->rrDock->widgets.at(i-1), i);
+		ruler->mapC1->addMapping(ui->c1Dock->widgets.at(i-1), i);
 		ruler->mapCR->addMapping(ui->crDock->widgets.at(i-1), i);
 		ruler->mapC2->addMapping(ui->c2Dock->widgets.at(i-1), i);
 		ruler->mapPR->addMapping(ui->prDock->widgets.at(i-1), i);
@@ -782,6 +786,7 @@ void Logic::initRuler() {
 	for (int i=0; i<=11; ++i) {
 		ui->lrDock->view->hideColumn(i);
 		ui->rrDock->view->hideColumn(i);
+		ui->c1Dock->view->hideColumn(i);
 		ui->crDock->view->hideColumn(i);
 		ui->c2Dock->view->hideColumn(i);
 		ui->prDock->view->hideColumn(i);
@@ -791,6 +796,8 @@ void Logic::initRuler() {
 	ui->rrDock->view->showColumn(8);
 	ui->rrDock->view->showColumn(9);
 	ui->rrDock->view->showColumn(10);
+	ui->c1Dock->view->showColumn(8);
+	ui->c1Dock->view->showColumn(9);
 	ui->crDock->view->showColumn(8);
 	ui->crDock->view->showColumn(9);
 	ui->c2Dock->view->showColumn(8);
@@ -800,6 +807,7 @@ void Logic::initRuler() {
 
 	connect(ui->lrDock, &RulerDock::dataChanged, ruler->mapLR, &QDataWidgetMapper::submit);
 	connect(ui->rrDock, &RulerDock::dataChanged, ruler->mapRR, &QDataWidgetMapper::submit);
+	connect(ui->c1Dock, &RulerDock::dataChanged, ruler->mapC1, &QDataWidgetMapper::submit);
 	connect(ui->crDock, &RulerDock::dataChanged, ruler->mapCR, &QDataWidgetMapper::submit);
 	connect(ui->c2Dock, &RulerDock::dataChanged, ruler->mapC2, &QDataWidgetMapper::submit);
 	connect(ui->prDock, &RulerDock::dataChanged, ruler->mapPR, &QDataWidgetMapper::submit);
@@ -807,7 +815,8 @@ void Logic::initRuler() {
 
 	connect(ui->lrDock, &RulerDock::defaultText, ruler->lr, &RulerModel::textToDefault);
 	connect(ui->rrDock, &RulerDock::defaultText, ruler->rr, &RulerModel::textToDefault);
-	connect(ui->crDock, &RulerDock::defaultText, ruler->c1, &RulerModel::textToDefault);
+	connect(ui->c1Dock, &RulerDock::defaultText, ruler->c1, &RulerModel::textToDefault);
+	connect(ui->crDock, &RulerDock::defaultText, ruler->cr, &RulerModel::textToDefault);
 	connect(ui->c2Dock, &RulerDock::defaultText, ruler->c2, &RulerModel::textToDefault);
 	connect(ui->prDock, &RulerDock::defaultText, ruler->pr, &RulerModel::textToDefault);
 	connect(ui->mlDock, &RulerDock::defaultText, ruler->mr, &RulerModel::textToDefault);
@@ -816,6 +825,8 @@ void Logic::initRuler() {
 		ruler->mapLR, SLOT(setCurrentModelIndex(QModelIndex)));
 	connect(ui->rrDock->view->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), 
 		ruler->mapRR, SLOT(setCurrentModelIndex(QModelIndex)));
+	connect(ui->c1Dock->view->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), 
+		ruler->mapC1, SLOT(setCurrentModelIndex(QModelIndex)));
 	connect(ui->crDock->view->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), 
 		ruler->mapCR, SLOT(setCurrentModelIndex(QModelIndex)));
 	connect(ui->c2Dock->view->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), 
@@ -840,6 +851,7 @@ void Logic::initRuler() {
 
 	ui->lrDock->emitData();
 	ui->rrDock->emitData();
+	ui->c1Dock->emitData();
 	ui->crDock->emitData();
 	ui->c2Dock->emitData();
 	ui->prDock->emitData();
@@ -847,7 +859,8 @@ void Logic::initRuler() {
 
 	connect(ui->lrDock, &RulerDock::fontChanged, ruler->lr, &RulerModel::setFont);
 	connect(ui->rrDock, &RulerDock::fontChanged, ruler->rr, &RulerModel::setFont);
-	connect(ui->crDock, &RulerDock::fontChanged, ruler->c1, &RulerModel::setFont);
+	connect(ui->c1Dock, &RulerDock::fontChanged, ruler->c1, &RulerModel::setFont);
+	connect(ui->crDock, &RulerDock::fontChanged, ruler->cr, &RulerModel::setFont);
 	connect(ui->c2Dock, &RulerDock::fontChanged, ruler->c2, &RulerModel::setFont);
 	connect(ui->prDock, &RulerDock::fontChanged, ruler->pr, &RulerModel::setFont);
 	connect(ui->mlDock, &RulerDock::fontChanged, ruler->mr, &RulerModel::setFont);
@@ -861,6 +874,7 @@ void Logic::initRuler() {
 
 	ruler->mapLR->addMapping(ui->lrDock->toggleText, 0);
 	ruler->mapRR->addMapping(ui->rrDock->toggleText, 0);
+	ruler->mapC1->addMapping(ui->c1Dock->toggleText, 0);
 	ruler->mapCR->addMapping(ui->crDock->toggleText, 0);
 	ruler->mapC2->addMapping(ui->c2Dock->toggleText, 0);
 	ruler->mapPR->addMapping(ui->prDock->toggleText, 0);

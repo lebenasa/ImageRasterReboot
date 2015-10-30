@@ -10,6 +10,6 @@ namespace States {
 	};	
 
 	enum RulerState {
-		Line, Rect, Circle, Circle2, Polygon, Path
+		Line, Rect, Circle, Circle2, Polygon, Path, TwoPoint
 	};
 };

@@ -249,6 +249,7 @@ RulerDock::RulerDock(int ruler_type, QWidget* parent) :
 		num3->setText("Area");
 		break;
 	case 2:
+	case 6:
 		num1->setText("Diameter");
 		num2->setText("Area");
 		hide3();
@@ -384,6 +385,7 @@ RulerTools::RulerTools(QWidget* parent):
 	rulers->addButton(circle2, 3);
 	rulers->addButton(polygon, 4);
 	rulers->addButton(multiline, 5);
+	rulers->addButton(circle3, 6);
 	rulers->setExclusive(true);
 	connect(rulers, SIGNAL(buttonClicked(int)), this, SIGNAL(RulerChanged(int)));
 }
@@ -813,6 +815,7 @@ CalibrationWizard::CalibrationWizard(const QString& srcImg, QWidget *parent):
 	QWizard(parent), Ui::CalibrationWizard(), imgSrc(srcImg)
 {
 	Ui::CalibrationWizard::setupUi(this);
+	setWizardStyle(QWizard::ModernStyle);
 	xScene = new CalibrationScene(0, this);
 	yScene = new CalibrationScene(1, this);
 	xView->setScene(xScene);

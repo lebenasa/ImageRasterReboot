@@ -44,7 +44,7 @@ ImageRaster::ImageRaster(QWidget *parent)
 	rulerTools = new RulerTools(this);
 	addDockWidget(Qt::RightDockWidgetArea, rulerTools);
 	//rulerTools->circle->hide();
-	rulerTools->circle2->hide();
+	//rulerTools->circle2->hide();
 	rulerTools->hide();
 	lrDock = new RulerDock(0, this);
 	addDockWidget(Qt::RightDockWidgetArea, lrDock);
@@ -64,6 +64,9 @@ ImageRaster::ImageRaster(QWidget *parent)
 	mlDock = new RulerDock(5, this);
 	addDockWidget(Qt::RightDockWidgetArea, mlDock);
 	mlDock->hide();
+	c1Dock = new RulerDock(6, this);
+	addDockWidget(Qt::RightDockWidgetArea, c1Dock);
+	c1Dock->hide();
 	profileDock = new ProfileDock(this);
 	addDockWidget(Qt::RightDockWidgetArea, profileDock);
 	profileDock->hide();
@@ -178,6 +181,9 @@ void ImageRaster::setAppState(int state) {
 			break;
 		case Path:
 			mlDock->show();
+			break;
+		case RulerState::TwoPoint:
+			c1Dock->show();
 			break;
 		default:
 			lrDock->show();

@@ -75,7 +75,7 @@ void GraphicsScene::setRulerState(int mode) {
 		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerRectangle);
 		break;
 	case RulerState::Circle:
-		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerCircle);
+		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerTriCircle);
 		break;
 	case RulerState::Circle2:
 		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerCentertoCenter);
@@ -85,6 +85,9 @@ void GraphicsScene::setRulerState(int mode) {
 		break;
 	case RulerState::Path:
 		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerMulti);
+		break;
+	case RulerState::TwoPoint:
+		connect(this, &GraphicsScene::mouseEvent, this, &GraphicsScene::cmrRulerCircle);
 		break;
 	}
 	rulerState = mode;
@@ -475,43 +478,43 @@ void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState m
 	}
 }
 
-//void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState ms)	{
-//	if (Qt::RightButton == event->button()) {
-//		return;
-//	}
-//	if (MouseState::Click == ms) {
-//		if (!sceneRect().contains(event->scenePos())) return;
-//		if (items(event->scenePos()).count() > 1) return;	//To ensure no overlap
-//		if (0 == click) {
-//			p1 = event->scenePos();
-//			++click;
-//			tmpCircle = new EllipseItem(rectFromCenter(p1));
-//			tmpCircle->setPenColor(Qt::black, Qt::white);
-//			tmpCircle->setPenWidth(2);
-//			addItem(tmpCircle);
-//			hasTmpItem = true;
-//		}
-//		else if (1 == click) {
-//			p2 = event->scenePos();
-//			++click;
-//			EllipseItem* item = new EllipseItem(rectFromCenter(p2), tmpCircle);
-//			item->setPenColor(Qt::black, Qt::white);
-//			item->setPenWidth(2);
-//			addItem(item);
-//		}
-//		else if (2 == click) {
-//			p3 = event->scenePos();
-//			click = 0;
-//			delete tmpCircle;
-//			hasTmpItem = false;
-//			emit addCR(p1, p2, p3);
-//		}
-//	}
-//	else if (MouseState::Move == ms) {
-//	}
-//	else if (MouseState::Release == ms) {
-//	}
-//}
+void GraphicsScene::cmrRulerTriCircle(QGraphicsSceneMouseEvent *event, MouseState ms)	{
+	if (Qt::RightButton == event->button()) {
+		return;
+	}
+	if (MouseState::Click == ms) {
+		if (!sceneRect().contains(event->scenePos())) return;
+		if (items(event->scenePos()).count() > 1) return;	//To ensure no overlap
+		if (0 == click) {
+			p1 = event->scenePos();
+			++click;
+			tmpCircle = new EllipseItem(rectFromCenter(p1));
+			tmpCircle->setPenColor(Qt::black, Qt::white);
+			tmpCircle->setPenWidth(2);
+			addItem(tmpCircle);
+			hasTmpItem = true;
+		}
+		else if (1 == click) {
+			p2 = event->scenePos();
+			++click;
+			EllipseItem* item = new EllipseItem(rectFromCenter(p2), tmpCircle);
+			item->setPenColor(Qt::black, Qt::white);
+			item->setPenWidth(2);
+			addItem(item);
+		}
+		else if (2 == click) {
+			p3 = event->scenePos();
+			click = 0;
+			delete tmpCircle;
+			hasTmpItem = false;
+			emit addCR(p1, p2, p3);
+		}
+	}
+	else if (MouseState::Move == ms) {
+	}
+	else if (MouseState::Release == ms) {
+	}
+}
 
 void GraphicsScene::cmrRulerCentertoCenter(QGraphicsSceneMouseEvent *event, MouseState ms)	{
 	if (Qt::RightButton == event->button()) {

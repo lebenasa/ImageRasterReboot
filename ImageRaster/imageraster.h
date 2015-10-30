@@ -56,7 +56,7 @@ public:
 	ImageRaster(QWidget *parent = 0);
 	~ImageRaster();
 
-	RulerDock *lrDock, *rrDock, *crDock, *c2Dock, *prDock, *mlDock;
+	RulerDock *lrDock, *rrDock, *crDock, *c2Dock, *prDock, *mlDock, *c1Dock;
 	void createRecents();
 	void iopen(const QString& fname);
 

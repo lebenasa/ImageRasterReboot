@@ -65,6 +65,7 @@ public slots:
 	void cmrRulerLine(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerRectangle(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState ms);
+	void cmrRulerTriCircle(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerCentertoCenter(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerPolygon(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerMulti(QGraphicsSceneMouseEvent *event, MouseState ms);
