@@ -7,23 +7,39 @@ Rectangle {
     width: 1240
     height: 720
 
+    property real zoomLevel: 1.0
+
+    function zoomIn() {
+        if (zoomLevel < 3.0)
+            zoomLevel += 0.1
+    }
+
+    function zoomOut() {
+        if (zoomLevel > 0.5)
+            zoomLevel -= 0.1
+    }
+
+    Behavior on zoomLevel {
+        SpringAnimation{ duration: 100; spring: 2; damping: 0.2 }
+    }
+
     ScrollView {
         anchors.fill: parent
         Rectangle {
             id: placeholder
             color: "black"
-            width: image.sourceSize.width > root.width ? image.sourceSize.width : root.width
-            height: image.sourceSize.height > root.height ? image.sourceSize.height : root.height
+            width: image.width > root.width ? image.width : root.width
+            height: image.height > root.height ? image.height : root.height
             Image {
                 id: image
-                width: sourceSize.width
-                height: sourceSize.height
+                width: zoomLevel * sourceSize.width
+                height: zoomLevel * sourceSize.height
                 anchors.centerIn: parent
 //                source: "/Users/Leben Asa/Pictures/final_fantasy_xiii_2_cc_bb.gif"
                 source: widget.image
 
                 function updateCropArea() {
-                    widget.cropArea = Qt.rect(crop.x, crop.y, crop.width, crop.height)
+                    widget.cropArea = zoomLevel * Qt.rect(crop.x, crop.y, crop.width, crop.height)
                 }
 
                 Item {
@@ -99,6 +115,46 @@ Rectangle {
                         drag.axis: Drag.XAxis
                         drag.minimumX: crop.x + 2 * crop._m
                         drag.maximumX: image.width
+                    }
+
+                    MouseArea {
+                        id: zoomer
+                        anchors.fill: parent
+                        anchors.margins: crop._m
+                        acceptedButtons: Qt.LeftButton
+
+                        property int _lx
+                        property int _ly
+                        property point _ltl
+                        property point _lbr
+
+                        onWheel: {
+                            if (wheel.angleDelta.y > 0)
+                                zoomIn()
+                            else
+                                zoomOut()
+                            wheel.accepted = true
+                            image.updateCropArea()
+                        }
+
+                        onPressed: {
+                            _lx = mouse.x
+                            _ly = mouse.y
+                            _ltl = Qt.point(tl.x, tl.y)
+                            _lbr = Qt.point(br.x, br.y)
+                            mouse.accepted = true
+                            image.updateCropArea()
+                        }
+
+                        onPositionChanged: {
+                            var dx = mouse.x - _lx
+                            var dy = mouse.y - _ly
+                            tl.x = _ltl.x + dx
+                            tl.y = _ltl.y + dy
+                            br.x = _lbr.x + dx
+                            br.y = _lbr.y + dy
+                            image.updateCropArea()
+                        }
                     }
 
                     onXChanged: image.updateCropArea()
