@@ -790,11 +790,8 @@ void CalibrationScene::resetState() {
 
 void setImage(QGraphicsScene* scn, const QString& path)
 {
-	std::vector < QGraphicsItem* > pool;
 	for (auto item : scn->items())
-		if (item->type() == QGraphicsPixmapItem::Type) pool.push_back(item);
-	while (!pool.empty())
-		delete pool[0];
+		if (item->type() == QGraphicsPixmapItem::Type) scn->removeItem(item);
 	auto pix = tryOpenPixmap( path );
 	auto myPix = scn->addPixmap(pix);
 	scn->setSceneRect(pix.rect());

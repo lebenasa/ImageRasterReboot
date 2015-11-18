@@ -171,7 +171,7 @@ RulerModel* RulerLogic::modelAt(int RulerItemType) {
 
 //Scale
 ScaleLogic::ScaleLogic(Logic* logic):
-	QObject(logic), logic(logic), scene(logic->getScene())
+QObject(logic), logic(logic), scene(logic->getScene()), visible{ false }
 {
 	hs1 = new SimpleScale(QLineF());
 	vs1 = new SimpleScale(QLineF());
@@ -181,6 +181,10 @@ ScaleLogic::ScaleLogic(Logic* logic):
 	vs3 = new RulerScale(QLineF());
 	hs << hs1 << hs2 << hs3;
 	vs << vs1 << vs2 << vs3;
+	for (auto s : hs)
+		scene->addItem(s);
+	for (auto s : vs)
+		scene->addItem(s);
 	QString arg = QString("ScaleL");
 	auto s = Settings(arg);
 	unit.value = 100.0;
@@ -194,10 +198,10 @@ ScaleLogic::~ScaleLogic() {
 }
 
 void ScaleLogic::showScale(int h, int v) {
-	if (hI != h)
-		updateHScale(h);
-	if (vI != v)
-		updateVScale(v);
+	visible = true;
+	updateHScale(h);
+	updateVScale(v);
+	scene->update();
 }
 
 void ScaleLogic::updateHScale(int h) {
@@ -244,6 +248,9 @@ void ScaleLogic::setLength(const QString& txt) {
 	updateHScale(hI);
 	updateVScale(vI);
 	scene->update();
+
+	if (!isVisible())
+		hideScale();
 }
 
 void ScaleLogic::setFont(const QFont& font) {
@@ -267,19 +274,20 @@ void ScaleLogic::setHasBackground(int state) {
 
 void ScaleLogic::setStyle(int style) {
 	scaleType = style;
-	hideScale();
+	for (auto s : hs) s->setVisible(false);
+	for (auto s : vs) s->setVisible(false);
 	switch (style) {
 	case 0:
-		scene->addItem(hs1);
-		scene->addItem(vs1);
+		hs1->setVisible(true);
+		vs1->setVisible(true);
 		break;
 	case 2:
-		scene->addItem(hs2);
-		scene->addItem(vs2);
+		hs2->setVisible(true);
+		vs2->setVisible(true);
 		break;
 	case 1:
-		scene->addItem(hs3);
-		scene->addItem(vs3);
+		hs3->setVisible(true);
+		vs3->setVisible(true);
 		break;
 	}
 }
@@ -382,8 +390,14 @@ QLineF ScaleLogic::vLine(int v) {
 }
 
 void ScaleLogic::hideScale() {
-	for (auto s : hs) scene->removeItem(s);
-	for (auto s : vs) scene->removeItem(s);
+	visible = false;
+	for (auto s : hs) s->setVisible(false);
+	for (auto s : vs) s->setVisible(false);
+}
+
+bool ScaleLogic::isVisible() const
+{
+	return visible;
 }
 
 //Legend
@@ -884,7 +898,9 @@ void Logic::initRuler() {
 void Logic::initScale() {
 	scale = new ScaleLogic(this);
 
-	auto setProfile = [this](int w, int h) { scale->setRealMod(1.0*w/scene->width(), 1.0*h/scene->height()); };
+	auto setProfile = [this](int w, int h) { 
+		scale->setRealMod(1.0*w / scene->width(), 1.0*h / scene->height()); 
+	};
 	connect(profile, &ProfileLogic::currentProfileChanged, setProfile);
 	setProfile(profile->model->at(profile->mapper->currentIndex()).width, profile->model->at(profile->mapper->currentIndex()).height);
 

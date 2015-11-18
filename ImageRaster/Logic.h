@@ -111,12 +111,15 @@ class ScaleLogic:
 	RulerScale* hs3, *vs3;
 	QLineF hLine(int h), vLine(int v);
 	Unit unit;
+	bool visible;
 public:
 	ScaleLogic(Logic* logic);
 	~ScaleLogic();
 
 	QList<ScaleItem*> vs, hs;
 	int hI, vI;
+
+	bool isVisible() const;
 public slots:
 	void showScale(int h, int v);
 	void updateHScale(int h);
