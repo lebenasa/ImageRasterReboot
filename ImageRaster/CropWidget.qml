@@ -122,6 +122,7 @@ Rectangle {
                         anchors.fill: parent
                         anchors.margins: crop._m
                         acceptedButtons: Qt.LeftButton
+                        preventStealing: true
 
                         property int _lx
                         property int _ly

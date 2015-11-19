@@ -209,6 +209,8 @@ class CalibrationWizard:
 	bool calibrateY;
 	SimpleScale *xScale, *yScale;
 	void addScale();
+	QPixmap xPix;
+	QPixmap yPix;
 public:
 	CalibrationWizard(const QString& srcImg, QWidget *parent=0);
 
@@ -231,4 +233,6 @@ public slots:
 private:
 	bool isImageExist(const QString& file);
 	void initReview(const QString& image);
+
+	void initView(GraphicsView*);
 };

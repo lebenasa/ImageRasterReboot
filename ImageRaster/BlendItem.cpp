@@ -157,6 +157,7 @@ void BlendScene::setBackground(const QString& file)
 	auto bg = addPixmap(base);
 	setSceneRect(base.rect());
 	bg->setZValue(-1000);
+	bg->setVisible(true);
 }
 
 RectItem* BlendScene::addRectItem(int width, int height) {
@@ -447,11 +448,8 @@ StylePage::~StylePage()
 
 void StylePage::setBackground(const QString& source)
 {
-	if (m_background != source)
-	{
-		m_background = source;
-		emit backgroundChanged(source);
-	}
+	m_background = source;
+	emit backgroundChanged(source);
 }
 
 QString StylePage::background() const
@@ -484,6 +482,12 @@ void StylePage::initializePage()
 	m_scene->setBackground(background());
 	m_scene->setThumbnail(field("imagePath").toString(), field("cropArea").toRect());
 	on_styleCombo_currentIndexChanged(styleCombo->currentIndex());
+	color1->setColor(Qt::black);
+	color2->setColor(Qt::white);
+	lineweight->setValue(2);
+	thumbSize->setValue(400);
+	anchorSize->setValue(100);
+	fontSize->setFontSize(20);
 	view2->zoomToActual();
 }
 

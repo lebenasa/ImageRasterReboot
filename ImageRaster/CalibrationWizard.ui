@@ -6,15 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>510</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Lens Calibration</string>
-  </property>
-  <property name="options">
-   <set>QWizard::HaveCustomButton1|QWizard::HelpButtonOnRight</set>
   </property>
   <widget class="QWizardPage" name="wizardPage1">
    <property name="title">

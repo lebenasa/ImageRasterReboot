@@ -830,10 +830,10 @@ CalibrationWizard::CalibrationWizard(const QString& srcImg, QWidget *parent):
 	connect(this, &QWizard::currentIdChanged, this, &CalibrationWizard::hideNextButton);
 	//setWindowState(Qt::WindowMaximized);
 
-	auto btn = button(QWizard::CustomButton1);
-	btn->setText("&Back");
-	connect(btn, SIGNAL(clicked()), this, SLOT(back()));
-	connect(this, &QWizard::currentIdChanged, [btn](int id) { btn->setEnabled(id != 0); });
+	//auto btn = button(QWizard::CustomButton1);
+	//btn->setText("&Back");
+	//connect(btn, SIGNAL(clicked()), this, SLOT(back()));
+	//connect(this, &QWizard::currentIdChanged, [btn](int id) { btn->setEnabled(id != 0); });
 }
 
 void initScene(CalibrationScene* scn, const QString& image)
@@ -843,13 +843,9 @@ void initScene(CalibrationScene* scn, const QString& image)
 	scn->setImage(im);
 }
 
-void initView(GraphicsView* view)
+void CalibrationWizard::initView(GraphicsView* view)
 {
 	view->zoomToFit();
-	view->zoomIn();
-	view->zoomIn();
-	view->zoomIn();
-	view->zoomIn();
 	view->zoomIn();
 	view->zoomIn();
 	view->zoomIn();
@@ -868,12 +864,11 @@ void CalibrationWizard::initReview(const QString& image)
 	reviewImgPath = image;
 	setImage(reviewScene, reviewImgPath);
 	addScale();
+	initView(reviewView);
 }
 
 bool CalibrationWizard::validateCurrentPage() {
 	int pixelX, pixelY;
-	QPixmap xPix;
-	QPixmap yPix;
 	QPixmap reviewPix;
 	int tmpLength;
 	switch (currentId()) {
