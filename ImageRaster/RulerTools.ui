@@ -83,7 +83,7 @@
       </property>
       <property name="icon">
        <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Circle.png</normaloff>:/Resources/Circle.png</iconset>
+        <normaloff>:/Resources/Circle2.png</normaloff>:/Resources/Circle2.png</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>

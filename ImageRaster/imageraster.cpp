@@ -149,6 +149,7 @@ void ImageRaster::setAppState(int state) {
 	rrDock->hide();
 	crDock->hide();
 	c2Dock->hide();
+	c1Dock->hide();
 	prDock->hide();
 	mlDock->hide();
 	profileDock->hide();
