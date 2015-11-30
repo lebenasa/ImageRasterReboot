@@ -872,10 +872,6 @@ bool CalibrationWizard::validateCurrentPage() {
 	QPixmap reviewPix;
 	int tmpLength;
 	switch (currentId()) {
-	case PageStatus::Intro:
-		break;
-	case PageStatus::XIntro:
-		break;
 	case PageStatus::XOpen:
 		if (xUseImageFromScene->isChecked())
 			xImgPath = imgSrc;
@@ -892,6 +888,10 @@ bool CalibrationWizard::validateCurrentPage() {
 	case PageStatus::XCalibrate:
 		if (!xScene->IsCalibrated()) {
 			QMessageBox::warning(this, "Invalid pixel length", "Please pick two points from the scene.");
+			return false;
+		}
+		else if (xUnit->currentText().toInt() == 0) {
+			QMessageBox::warning(this, "Invalid pixel length", "Please insert real width between two points.");
 			return false;
 		}
 		else {
@@ -923,6 +923,10 @@ bool CalibrationWizard::validateCurrentPage() {
 			QMessageBox::warning(this, "Invalid pixel length", "Please pick two points from the scene.");
 			return false;
 		}
+		else if (yUnit->currentText().toInt() == 0) {
+			QMessageBox::warning(this, "Invalid pixel length", "Please insert real width between two points.");
+			return false;
+		}
 		else {
 			pixelY = yScene->PixelLength();
 			tmpLength = ("mm" == yUnit->currentText()) ? yLength->value() * 1000 : yLength->value();
@@ -941,10 +945,6 @@ bool CalibrationWizard::validateCurrentPage() {
 
 int CalibrationWizard::nextId() const {
 	switch (currentId()) {
-	case Intro:
-		break;
-	case XIntro:
-		break;
 	case XOpen:
 		break;
 	case XCalibrate:

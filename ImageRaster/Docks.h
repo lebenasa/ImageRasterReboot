@@ -215,7 +215,7 @@ public:
 	CalibrationWizard(const QString& srcImg, QWidget *parent=0);
 
 	enum PageStatus {
-		Intro, XIntro, XOpen, XCalibrate, YIntro, YOpen, YCalibrate, Review, Finish
+		XOpen, XCalibrate, YIntro, YOpen, YCalibrate, Review, Finish
 	} pageStatus;
 	bool validateCurrentPage();
 	int nextId() const;

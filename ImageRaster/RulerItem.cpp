@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "RulerItem.h"
 #include <math.h>
+using namespace std;
 
 QPointF LineRuler::calculateTextPos() const {
 	QRectF bound = TextRect();
@@ -441,33 +442,6 @@ QVariant RectRulerModel::headerData(int section, Qt::Orientation orientation, in
 }
 
 //CircleRulerModel
-void CircleRulerModel::calculate(int row) {
-	auto r = (CircleRuler*)rulers.at(row);
-	auto l = r->rect();
-	data1.at(row)->prefix = "Diameter";
-	data1.at(row)->isUnused = false;
-	data3.at(row)->isUnused = true;
-	setData(index(row, 8), l.width()*realWidth);
-	Unit u = 3.14 * 0.25 * *data1.at(row) * *data1.at(row);
-	data2.at(row)->power = 2;
-	data2.at(row)->prefix = "Area";
-	data2.at(row)->isUnused = false;
-	setData(index(row, 9), u.value);
-}
-
-QVariant CircleRulerModel::headerData(int section, Qt::Orientation orientation, int role) const {
-	if (Qt::DisplayRole != role) return QVariant();
-	if (Qt::Horizontal == orientation) {
-		if (8 == section)
-			return "Diameter " + QString::fromLatin1("(µm)");
-		else if (9 == section)
-			return "Area " + QString::fromLatin1("(µm²)");
-	}
-	return RulerModel::headerData(section, orientation, role);
-}
-
-
-//TriCircleRulerModel
 QPointF operator*(const QPointF& point, const QPointF& multiplier) {
 	QPointF res;
 	res.setX(point.x()*multiplier.x());
@@ -501,6 +475,49 @@ QRectF rectFrom3Point(const QPointF& p1, const QPointF& p2, const QPointF& p3) {
 	return QRectF(TL, QSizeF(2*radius, 2*radius));
 }
 
+void CircleRulerModel::calculate(int row) {
+	auto r = (CircleRuler*)rulers.at(row);
+	auto tr = r->getDuplet();
+	//Convert to real coordinate
+	QPointF realDimension = QPointF(realWidth, realHeight);
+	auto pa = tr.p1 * realDimension;
+	auto pb = tr.p2 * realDimension;
+
+	auto ln = QLineF{ pa, pb };
+	double r_diameter = QLineF{ pa, pb }.length();
+	double r_area = std::acos(-1) * 0.25 * pow(r_diameter, 2);
+
+	//Reconvert it to pixel coordinate and draw it
+	QPointF center = (ln.p1() + QPointF{ ln.dx() / 2, ln.dy() / 2 }) / realDimension;
+	double may = (0.5*r_diameter)/realWidth;
+	double min = (0.5*r_diameter)/realHeight;
+	QPointF TL = center - QPointF(may, min);
+	QRectF circle = QRectF(TL, QSizeF(may*2, min*2));
+	
+	data1.at(row)->prefix = "Diameter";
+	data1.at(row)->isUnused = false;
+	data3.at(row)->isUnused = true;
+	setData(index(row, 8), r_diameter);
+	data2.at(row)->power = 2;
+	data2.at(row)->prefix = "Area";
+	data2.at(row)->isUnused = false;
+	setData(index(row, 9), r_area);
+	r->setRect(circle);
+}
+
+QVariant CircleRulerModel::headerData(int section, Qt::Orientation orientation, int role) const {
+	if (Qt::DisplayRole != role) return QVariant();
+	if (Qt::Horizontal == orientation) {
+		if (8 == section)
+			return "Diameter " + QString::fromLatin1("(µm)");
+		else if (9 == section)
+			return "Area " + QString::fromLatin1("(µm²)");
+	}
+	return RulerModel::headerData(section, orientation, role);
+}
+
+
+//TriCircleRulerModel
 void TriCircleRulerModel::calculate(int row) {
 	auto cr = (TriCircleRuler*)rulers.at(row);
 	auto tr = cr->getTriplet();
@@ -512,7 +529,7 @@ void TriCircleRulerModel::calculate(int row) {
 
 	auto r_circle = rectFrom3Point(pa, pb, pc);
 	double r_diameter = r_circle.width();
-	double r_area = 3.14 * 0.25 * pow(r_diameter, 2);
+	double r_area = std::acos(-1) * 0.25 * pow(r_diameter, 2);
 	
 	//Reconvert it to pixel coordinate and draw it
 	QPointF center = r_circle.center() / realDimension;

@@ -113,10 +113,18 @@ public:
 	}
 };
 
+struct Duplet {
+	QPointF p1, p2;
+	Duplet(const QPointF& p1 = QPointF(), const QPointF& p2 = QPointF())
+		: p1(p1), p2(p2) 
+	{ }
+};
+
 class CircleRuler:
 	public RulerItem<EllipseItem, QRectF>
 {
 	QPointF calculateTextPos() const;
+	Duplet originalPoints;
 public:
 	CircleRuler(const QRectF& rect, QGraphicsItem* parent=0):
 		RulerItem<EllipseItem, QRectF>(rect, parent) {}
@@ -136,6 +144,13 @@ public:
 		label->setFontSize(size);
 		label->setPos(calculateTextPos());
 	}
+
+	void setDuplet(const QPointF& p1, const QPointF& p2)
+	{
+		originalPoints = Duplet{ p1, p2 };
+	}
+
+	Duplet getDuplet() const { return originalPoints; }
 };
 
 struct Triplet {

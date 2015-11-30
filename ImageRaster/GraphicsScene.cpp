@@ -429,6 +429,10 @@ void GraphicsScene::cmrRulerRectangle(QGraphicsSceneMouseEvent *event, MouseStat
 	}
 }
 
+QPointF operator*(const QPointF& point, const QPointF& multiplier);
+
+QPointF operator/(const QPointF& point, const QPointF& multiplier);
+
 void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState ms)	{
 	if (Qt::RightButton == event->button()) {
 		return;
@@ -444,9 +448,21 @@ void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState m
 		if (!isDragged) return;
 		p2 = event->scenePos();
 		if (sceneRect().contains(p2)) {
-			auto r = QRectF(p1, p2).normalized();
-			auto ln = 0.5 * QLineF(p1, p2).length();
-			auto circ = QRectF(r.center() - QPointF(ln, ln), r.center() + QPointF(ln, ln));
+			//Convert to real coordinate
+			QPointF realDimension = QPointF(realWidth, realHeight);
+			auto pa = p1 * realDimension;
+			auto pb = p2 * realDimension;
+
+			auto ln = QLineF{ pa, pb };
+			double r_diameter = QLineF{ pa, pb }.length();
+			double r_area = std::acos(-1) * 0.25 * pow(r_diameter, 2);
+
+			//Reconvert it to pixel coordinate and draw it
+			QPointF center = (ln.p1() + QPointF{ ln.dx() / 2, ln.dy() / 2 }) / realDimension;
+			double may = (0.5*r_diameter)/realWidth;
+			double min = (0.5*r_diameter)/realHeight;
+			QPointF TL = center - QPointF(may, min);
+			QRectF circ = QRectF(TL, QSizeF(may*2, min*2));
 			if (!hasTmpItem) {
 				tmpCircle = new EllipseItem(circ);
 				tmpCircle->setPenColor(Qt::black, Qt::white);
@@ -474,6 +490,7 @@ void GraphicsScene::cmrRulerCircle(QGraphicsSceneMouseEvent *event, MouseState m
 		auto ln = 0.5 * line.length();
 		auto circ = QRectF(r.center() - QPointF(ln, ln), r.center() + QPointF(ln, ln));
 		CircleRuler* ruler = new CircleRuler(circ);
+		ruler->setDuplet(p1, p2);
 		emit addC1(ruler);
 	}
 }
@@ -753,4 +770,10 @@ void GraphicsScene::finishPolygon() {
 			emit addMR(ruler);
 		}
 	}
+}
+
+void GraphicsScene::setRealMod(double rw, double rh)
+{
+	realWidth = rw;
+	realHeight = rh;
 }

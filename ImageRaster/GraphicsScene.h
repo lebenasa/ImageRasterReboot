@@ -39,6 +39,8 @@ class GraphicsScene :
 	int appState;
 	int rulerState;
 	int markerType;
+
+	double realWidth, realHeight;
 public:
 	GraphicsScene(QObject* parent = 0);
 	~GraphicsScene();
@@ -70,6 +72,8 @@ public slots:
 	void cmrRulerPolygon(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void cmrRulerMulti(QGraphicsSceneMouseEvent *event, MouseState ms);
 	void finishPolygon();
+
+	void setRealMod(double rwidth, double rheight);
 
 signals:
 	void appStateChanged(int state);

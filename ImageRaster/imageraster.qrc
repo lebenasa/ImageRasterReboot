@@ -1,5 +1,8 @@
 <RCC>
   <qresource>
+    <file>Resources/LMB.png</file>
+    <file>Resources/RMB.png</file>
+    <file>Resources/Wheels.png</file>
     <file>Resources/two circle2.png</file>
     <file>Resources/Rectangle.png</file>
     <file>Resources/blend2.png</file>

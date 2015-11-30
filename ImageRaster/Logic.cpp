@@ -671,6 +671,10 @@ GraphicsScene* Logic::initScene(const QString& fname) {
 	connect(ui->ui.graphicsView, &GraphicsView::zoomChanged, [this](double z) { ui->zoom->setText(QString("%1%").arg(z*100, 0, 'g', -1)); });
 	connect(scene, &GraphicsScene::helpText, ui->help, &QLabel::setText);
 
+	auto setProfile = [&](int w, int h) { scene->setRealMod(1.0*w/scene->width(), 1.0*h/scene->height()); };
+	connect(profile, &ProfileLogic::currentProfileChanged, setProfile);
+	setProfile(profile->model->at(profile->mapper->currentIndex()).width, profile->model->at(profile->mapper->currentIndex()).height);
+
 	return scene;
 }
 
