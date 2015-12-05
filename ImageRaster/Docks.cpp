@@ -890,7 +890,7 @@ bool CalibrationWizard::validateCurrentPage() {
 			QMessageBox::warning(this, "Invalid pixel length", "Please pick two points from the scene.");
 			return false;
 		}
-		else if (xUnit->currentText().toInt() == 0) {
+		else if (xLength->value() == 0) {
 			QMessageBox::warning(this, "Invalid pixel length", "Please insert real width between two points.");
 			return false;
 		}
@@ -923,7 +923,7 @@ bool CalibrationWizard::validateCurrentPage() {
 			QMessageBox::warning(this, "Invalid pixel length", "Please pick two points from the scene.");
 			return false;
 		}
-		else if (yUnit->currentText().toInt() == 0) {
+		else if (yLength->value() == 0) {
 			QMessageBox::warning(this, "Invalid pixel length", "Please insert real width between two points.");
 			return false;
 		}
