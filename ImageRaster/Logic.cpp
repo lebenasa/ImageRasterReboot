@@ -59,7 +59,10 @@ ProfileLogic::ProfileLogic(Logic* logic)
 	mapper = new QDataWidgetMapper(this);
 	mapper->setModel(model);
 	mapper->toFirst();
-	connect(mapper, &QDataWidgetMapper::currentIndexChanged, [this](int i){ emit currentProfileChanged(model->at(i).width, model->at(i).height); });
+	auto updater = [this](int i){ emit currentProfileChanged(model->at(i).width, model->at(i).height); };
+	auto updater2 = [this]() { emit currentProfileChanged(model->at(mapper->currentIndex()).width, model->at(mapper->currentIndex()).height); };
+	connect(mapper, &QDataWidgetMapper::currentIndexChanged, updater);
+	connect(model, &ProfileModel::dataChanged, updater2);
 	profileSync = new QTimer(this);
 	profileSync->setInterval(15000);
 	connect(profileSync, &QTimer::timeout, model, &ProfileModel::refreshProfile);

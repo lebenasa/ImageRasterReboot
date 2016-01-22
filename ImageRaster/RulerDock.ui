@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>255</width>
+    <width>304</width>
     <height>589</height>
    </rect>
   </property>
@@ -95,7 +95,7 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>1</height>
+        <height>60</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -191,22 +191,44 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="1">
-        <widget class="QPushButton" name="fuchsia">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
+        <widget class="QPushButton" name="wb">
          <property name="toolTip">
-          <string>Fuchsia/Black</string>
+          <string>White/Black</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset resource="imageraster.qrc">
-           <normaloff>:/Resources/Preset2.png</normaloff>:/Resources/Preset2.png</iconset>
+           <normaloff>:/Resources/Preset5.png</normaloff>:/Resources/Preset5.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QPushButton" name="crimson">
+         <property name="toolTip">
+          <string>Crimson/Black</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="imageraster.qrc">
+           <normaloff>:/Resources/Preset3.png</normaloff>:/Resources/Preset3.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QPushButton" name="cyan">
+         <property name="toolTip">
+          <string>Cyan/Black</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="imageraster.qrc">
+           <normaloff>:/Resources/Preset4.png</normaloff>:/Resources/Preset4.png</iconset>
          </property>
         </widget>
        </item>
@@ -230,7 +252,27 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
+       <item row="0" column="2">
+        <widget class="QPushButton" name="fuchsia">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Fuchsia/Black</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="imageraster.qrc">
+           <normaloff>:/Resources/Preset2.png</normaloff>:/Resources/Preset2.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="6">
         <widget class="QPushButton" name="mono">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -250,63 +292,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QPushButton" name="wb">
-         <property name="toolTip">
-          <string>White/Black</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="imageraster.qrc">
-           <normaloff>:/Resources/Preset5.png</normaloff>:/Resources/Preset5.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="cyan">
-         <property name="toolTip">
-          <string>Cyan/Black</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="imageraster.qrc">
-           <normaloff>:/Resources/Preset4.png</normaloff>:/Resources/Preset4.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="crimson">
-         <property name="toolTip">
-          <string>Crimson/Black</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="imageraster.qrc">
-           <normaloff>:/Resources/Preset3.png</normaloff>:/Resources/Preset3.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="lime">
-         <property name="toolTip">
-          <string>Lime/Transparent</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="imageraster.qrc">
-           <normaloff>:/Resources/Preset8.png</normaloff>:/Resources/Preset8.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
+       <item row="0" column="4">
         <widget class="QPushButton" name="green">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -323,6 +309,20 @@
          <property name="icon">
           <iconset resource="imageraster.qrc">
            <normaloff>:/Resources/Preset6.png</normaloff>:/Resources/Preset6.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="7">
+        <widget class="QPushButton" name="lime">
+         <property name="toolTip">
+          <string>Lime/Transparent</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="imageraster.qrc">
+           <normaloff>:/Resources/Preset8.png</normaloff>:/Resources/Preset8.png</iconset>
          </property>
         </widget>
        </item>

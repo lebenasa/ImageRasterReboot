@@ -292,8 +292,8 @@ void ImageRaster::closeEvent(QCloseEvent *event) {
 void ImageRaster::on_actionOpenImage_triggered() {
 	QFileDialog openFileDg(this);
 	openFileDg.setFileMode(QFileDialog::ExistingFile);
-	openFileDg.setNameFilter("Image Files (*.png; *.jpg; *.bmp);;Portable Network Graphics File (*.png);;\
-		JPEG File-Format (*.jpg);;Bitmap File (*.bmp)");
+    openFileDg.setNameFilter("Image Files (*.png; *.jpg; *.bmp; *.tiff);;Portable Network Graphics File (*.png);;\
+		JPEG File-Format (*.jpg);;Bitmap File (*.bmp);;Tagged Image File Format (*.tiff)");
 	//openFileDg.setDirectory(QDir::home());
 	//openFileDg.setViewMode(QFileDialog::Detail);
 	QString imgName;
@@ -317,7 +317,7 @@ void ImageRaster::on_actionOpenImage_triggered() {
 bool ImageRaster::on_actionSaveImage_triggered() {
 	if (!logic->hasImage()) return false;
 	QString imgName = QFileDialog::getSaveFileName(this, "Save Edited Image",
-		"", "Portable Network Graphics File (*.png);;JPEG File-Format (*.jpg);;Bitmap File (*.bmp)");
+		"", "Portable Network Graphics File (*.png);;JPEG File-Format (*.jpg);;Bitmap File (*.bmp);;Tagged Image File Format (*.tiff)");
 	if (imgName == "") return false;
 	logic->saveImage(imgName);
 	return true;
