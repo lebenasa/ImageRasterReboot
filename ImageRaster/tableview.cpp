@@ -33,7 +33,8 @@ void TableView::copy()
 			text += '\t';
 		}
 		currentRow = cell.row();
-		text += cell.data().toString();
+        auto locale = QLocale::system();
+		text += locale.toString(cell.data().toDouble());
 	}
 
 	QApplication::clipboard()->setText(text);
