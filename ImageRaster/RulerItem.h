@@ -428,6 +428,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~LineRulerModel() {
 		auto s = Settings("Ruler0L");
@@ -437,6 +438,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -458,6 +460,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~RectRulerModel() {
 		auto s = Settings("Ruler1L");
@@ -467,6 +470,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -488,6 +492,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~CircleRulerModel() {
 		auto s = Settings("Ruler9L");
@@ -497,6 +502,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -518,6 +524,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~TriCircleRulerModel() {
 		auto s = Settings("Ruler2L");
@@ -527,6 +534,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -551,6 +559,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~Circle2RulerModel() {
 		auto s = Settings("Ruler3L");
@@ -560,6 +569,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -584,6 +594,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~PolyRulerModel() {
 		auto s = Settings("Ruler4L");
@@ -593,6 +604,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
@@ -614,6 +626,7 @@ public:
 		myFont = s.font();
 		myFontSize = s.fontSize();
 		myHasBackground = s.hasBackground();
+        visible = s.custom("textVisible", true).toBool();
 	}
 	~PathRulerModel() {
 		auto s = Settings("Ruler5L");
@@ -623,6 +636,7 @@ public:
 		s.setFont(myFont);
 		s.setFontSize(myFontSize);
 		s.setHasBackground(myHasBackground);
+        s.setCustom("textVisible", visible);
 	}
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;

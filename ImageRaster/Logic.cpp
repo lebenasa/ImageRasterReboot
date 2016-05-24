@@ -970,9 +970,9 @@ void Logic::startBlendWizard() {
 		QGraphicsItem* anchor = blend->getAnchor();
 		QGraphicsItem* thumb = blend->getThumb();
 		SimpleTextItem* text = blend->getText();
-		anchor->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-		thumb->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
-		text->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
+		anchor->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsFocusable);
+		thumb->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsFocusable);
+		text->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsFocusable);
 		QList<QGraphicsItem*> items;
 		items.append(anchor);
 		items.append(thumb);

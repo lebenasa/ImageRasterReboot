@@ -178,6 +178,11 @@ AppSettings::AppSettings(QObject *parent)
 	setting = new QSettings{ QSettings::IniFormat, QSettings::UserScope, "Miconos", "Optilab", this };
 }
 
+AppSettings::AppSettings(const AppSettings& o)
+	: QObject{ o.parent() }, setting{ new QSettings{ QSettings::IniFormat, QSettings::UserScope, "Miconos", "Optilab", this} }
+{
+}
+
 AppSettings::~AppSettings()
 {
 
@@ -338,6 +343,11 @@ void AppSettings::resetAllShortcut() {
 Settings::Settings(const QString& prefix)
 	: s(QSettings::IniFormat, QSettings::UserScope, "Miconos", "ImageRaster"), prefix(prefix) 
 { 
+}
+
+Settings::Settings(const Settings& o)
+	: s{ QSettings::IniFormat, QSettings::UserScope, "Miconos", "ImageRaster" }, prefix{ o.prefix }
+{
 }
 
 void Settings::setColor1(const QColor& shape_color) {

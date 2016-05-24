@@ -277,6 +277,7 @@ RulerDock::RulerDock(int ruler_type, QWidget* parent) :
 	Font->setCurrentFont(s.font());
 	fontSize->setFontSize(s.fontSize());
 	useBackground->setChecked(s.hasBackground());
+    toggleText->setChecked(s.custom("textVisible", true).toBool());
 }
 
 RulerDock::~RulerDock() {
@@ -338,6 +339,7 @@ void RulerDock::saveProfile(int index) {
 	s.setFont(Font->currentFont());
 	s.setFontSize(fontSize->fontSize());
 	s.setHasBackground(useBackground->isChecked());
+    s.setCustom("textVisible", toggleText->isChecked());
 }
 
 void RulerDock::loadProfile(int index) {
@@ -350,6 +352,7 @@ void RulerDock::loadProfile(int index) {
 	Font->setCurrentFont(s.font());
 	fontSize->setFontSize(s.fontSize());
 	useBackground->setChecked(s.hasBackground());
+    toggleText->setChecked(s.custom("textVisible", true).toBool());
 }
 
 void RulerDock::saveTriggered() {
@@ -375,9 +378,10 @@ void RulerDock::setFont(const QFont& f)
 
 RulerTools::RulerTools(QWidget* parent):
 	QDockWidget(parent),
-	Ui::RulerTools()
+    Ui::RulerTools(), circle2{ new QPushButton{this} }
 {
 	Ui::RulerTools::setupUi(this);
+    circle2->hide();
 	rulers = new QButtonGroup(this);
 	rulers->addButton(line, 0);
 	rulers->addButton(rectangle, 1);

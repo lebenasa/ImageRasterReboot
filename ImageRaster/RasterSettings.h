@@ -18,7 +18,7 @@ class AppSettings : public QObject
 	std::vector<Profile> profiles;
 public:
 	AppSettings(QObject *parent = 0);
-	AppSettings(const AppSettings&) = delete;
+	AppSettings(const AppSettings&);
 	~AppSettings();
 
 signals:
@@ -67,6 +67,7 @@ class Settings
 public:
 	Settings() = delete;
 	Settings(const QString& prefix = "Global");
+	Settings(const Settings& o);
 	~Settings() = default;
 
 	void setColor1(const QColor& shape_color);

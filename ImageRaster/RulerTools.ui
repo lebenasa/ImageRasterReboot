@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>150</height>
+    <height>100</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -47,6 +47,20 @@
       </property>
      </widget>
     </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="circle3">
+      <property name="text">
+       <string>Circle</string>
+      </property>
+      <property name="icon">
+       <iconset resource="imageraster.qrc">
+        <normaloff>:/Resources/Circle2.png</normaloff>:/Resources/Circle2.png</iconset>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0">
      <widget class="QPushButton" name="line">
       <property name="sizePolicy">
@@ -76,54 +90,26 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="circle3">
-      <property name="text">
-       <string>Circle</string>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="rectangle">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
-      <property name="icon">
-       <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Circle2.png</normaloff>:/Resources/Circle2.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="circle2">
       <property name="toolTip">
-       <string>Calculate distance between two center</string>
+       <string>Calculate rectangular area</string>
       </property>
       <property name="statusTip">
-       <string>Click three points and another three points to measure</string>
+       <string>Click and drag to measure</string>
       </property>
       <property name="text">
-       <string>Distance</string>
+       <string>Rectangle</string>
       </property>
       <property name="icon">
        <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/TwoCircle.png</normaloff>:/Resources/TwoCircle.png</iconset>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QPushButton" name="polygon">
-      <property name="toolTip">
-       <string>Calculate polygonal area</string>
-      </property>
-      <property name="statusTip">
-       <string>Click arround object and right-click to finish measurement</string>
-      </property>
-      <property name="text">
-       <string>Polygon</string>
-      </property>
-      <property name="icon">
-       <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Polygon.png</normaloff>:/Resources/Polygon.png</iconset>
+        <normaloff>:/Resources/Rectangle.png</normaloff>:/Resources/Rectangle.png</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -150,26 +136,20 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="rectangle">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+    <item row="3" column="2">
+     <widget class="QPushButton" name="polygon">
       <property name="toolTip">
-       <string>Calculate rectangular area</string>
+       <string>Calculate polygonal area</string>
       </property>
       <property name="statusTip">
-       <string>Click and drag to measure</string>
+       <string>Click arround object and right-click to finish measurement</string>
       </property>
       <property name="text">
-       <string>Rectangle</string>
+       <string>Polygon</string>
       </property>
       <property name="icon">
        <iconset resource="imageraster.qrc">
-        <normaloff>:/Resources/Rectangle.png</normaloff>:/Resources/Rectangle.png</iconset>
+        <normaloff>:/Resources/Polygon.png</normaloff>:/Resources/Polygon.png</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>

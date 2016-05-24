@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "BlendItem.h"
 
+#include <iostream>
 #include <QQmlContext>
 
 #include "RasterSettings.h"
 
+using namespace std;
 using namespace blend;
 
 //class FrameRect
@@ -308,11 +310,8 @@ QUrl CropWidget::image() const
 
 void CropWidget::setImage(const QUrl& file)
 {
-	if (m_image != file)
-	{
-		m_image = file;
-		emit imageChanged(file);
-	}
+	m_image = file;
+	emit imageChanged(file);
 }
 
 QRect CropWidget::cropArea() const
@@ -351,7 +350,7 @@ OpenImagePage::OpenImagePage(QWidget* parent)
 	registerField("imagePath*", m_dir);
 
 	connect(m_browse, &QPushButton::clicked, [this](){
-		auto path = QFileDialog::getOpenFileName(this, tr("Select Image"), "", "Image Files (*.png *.jpg *.bmp *.gif)");
+		auto path = QFileDialog::getOpenFileName(this, tr("Select Image"), "", "Image Files (*.png *.jpg *.bmp *.gif *.tiff)");
 		if (!path.isEmpty()) m_dir->setText(path);
 	});
 }
@@ -363,8 +362,30 @@ void OpenImagePage::cleanupPage()
 
 bool OpenImagePage::validatePage()
 {
-	QImage im{ m_dir->text() };
+    QImage im{ m_dir->text() };
+	QFileInfo finfo{ m_dir->text() };
+	auto ext = finfo.suffix().toUpper().toUtf8();
+    if (im.isNull())
+	{
+		if (im.load(m_dir->text(), "PNG"))
+			im.save(m_dir->text(), ext);
+	}
 	if (im.isNull())
+	{
+		if (im.load(m_dir->text(), "BMP"))
+			im.save(m_dir->text(), ext);
+	}
+    if (im.isNull())
+	{
+        if (im.load(m_dir->text(), "JPG"))
+			im.save(m_dir->text(), ext);
+	}
+    if (im.isNull())
+	{
+        if (im.load(m_dir->text(), "TIFF"))
+			im.save(m_dir->text(), ext);
+	}
+    if (im.isNull())
 	{
 		QMessageBox::critical(this, tr("Invalid Image"), 
 			tr("Unfortunately, the application was unable to read the image. Please choose different image."));

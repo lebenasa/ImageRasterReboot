@@ -76,6 +76,7 @@ class RulerTools:
 {
 	Q_OBJECT
 	QButtonGroup* rulers;
+    QPushButton* circle2;
 public:
 	RulerTools(QWidget* parent=0);
 	~RulerTools();

@@ -19,7 +19,7 @@ GraphicsScene::~GraphicsScene(void)
 }
 
 void GraphicsScene::setAppState(int curState) {
-	if (appState == curState) return;
+	//if (appState == curState) return;
 	appState = curState;
 
 	resetStates();

@@ -10,12 +10,12 @@ Rectangle {
     property real zoomLevel: 1.0
 
     function zoomIn() {
-        if (zoomLevel < 3.0)
+        if (zoomLevel < 6.0)
             zoomLevel += 0.1
     }
 
     function zoomOut() {
-        if (zoomLevel > 0.5)
+        if (zoomLevel > 0.2)
             zoomLevel -= 0.1
     }
 
@@ -37,9 +37,10 @@ Rectangle {
                 anchors.centerIn: parent
 //                source: "/Users/Leben Asa/Pictures/final_fantasy_xiii_2_cc_bb.gif"
                 source: widget.image
+				asynchronous: true
 
                 function updateCropArea() {
-                    widget.cropArea = zoomLevel * Qt.rect(crop.x, crop.y, crop.width, crop.height)
+                    widget.cropArea = Qt.rect(crop.x / zoomLevel, crop.y / zoomLevel, crop.width / zoomLevel, crop.height / zoomLevel);
                 }
 
                 Item {
