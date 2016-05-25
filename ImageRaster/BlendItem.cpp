@@ -156,6 +156,12 @@ void BlendScene::setBackground(const QString& file)
 			removeItem(item);
 	}
 	base = QPixmap{ file };
+	auto exts = { "PNG", "JPG", "BMP", "TIFF" };
+	for (auto i = exts.begin(); i != exts.end(); ++i)
+	{
+		if (base.load(file, *i))
+			base.save(file);
+	}
 	auto bg = addPixmap(base);
 	setSceneRect(base.rect());
 	bg->setZValue(-1000);
@@ -508,6 +514,12 @@ void StylePage::initializePage()
 	lineweight->setValue(2);
 	thumbSize->setValue(400);
 	anchorSize->setValue(100);
+	QImage bg{ background() };
+	if (!bg.isNull())
+	{
+		thumbSize->setMaximum(bg.width());
+		anchorSize->setMaximum(bg.width());
+	}
 	fontSize->setFontSize(20);
 	view2->zoomToActual();
 }
